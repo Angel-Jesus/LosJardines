@@ -1,7 +1,7 @@
 package com.angelpr.losjardines.data.model
 
-data class InfoClient(
-    var id: String,
+data class Client(
+    var id: String = "",
     var name: String,
     var dni: String,
     var date: String,
