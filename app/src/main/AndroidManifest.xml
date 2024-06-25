@@ -17,6 +17,15 @@
         android:theme="@style/Theme.LosJardines"
         tools:targetApi="31">
         <activity
+            android:name=".ui.view.RoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.ConsultationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.RegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.MainActivity"
             android:exported="true">
             <intent-filter>

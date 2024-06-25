@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Color system -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="blue">#FF0000FF</color>"
+
+    <!-- Color app created -->
+    <color name="background_default">#BF272D</color>
+
+    <!-- Color without backgroundColor -->
+    <color name="background_without_color">#00FFFFFF</color>
 </resources>

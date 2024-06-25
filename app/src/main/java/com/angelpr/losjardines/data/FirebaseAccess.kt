@@ -6,7 +6,6 @@ import com.angelpr.losjardines.data.model.ClientsRegister
 import com.angelpr.losjardines.data.model.FilterType
 import com.angelpr.losjardines.data.model.HeadNameDB
 import com.google.firebase.Firebase
-import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.util.Calendar
@@ -31,7 +30,7 @@ object FirebaseAccess {
             HeadNameDB.AYN_DB to clienInfo.name,
             HeadNameDB.DNI_DB to clienInfo.dni,
             HeadNameDB.DATE_DB to clienInfo.date,
-            HeadNameDB.TIME_DB to clienInfo.time,
+            HeadNameDB.TIME_DB to clienInfo.hour,
             HeadNameDB.OBSERVATION_DB to clienInfo.observation,
             HeadNameDB.PRICE_DB to clienInfo.price,
             HeadNameDB.ORIGIN_DB to clienInfo.origin,

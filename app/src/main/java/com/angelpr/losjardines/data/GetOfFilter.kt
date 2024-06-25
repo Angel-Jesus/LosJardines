@@ -27,7 +27,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
                         dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
                         date = result.documents[index - 1].data?.get(HeadNameDB.DATE_DB).toString(),
-                        time = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
+                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
                         observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_DB)
                             .toString(),
                         price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_DB)
@@ -67,7 +67,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
                         dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
                         date = result.documents[index - 1].data?.get(HeadNameDB.DATE_DB).toString(),
-                        time = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
+                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
                         observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_DB)
                             .toString(),
                         price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_DB)
@@ -104,7 +104,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
                         dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
                         date = result.documents[index - 1].data?.get(HeadNameDB.DATE_DB).toString(),
-                        time = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
+                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
                         observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_DB)
                             .toString(),
                         price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_DB)
@@ -146,7 +146,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
                         dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
                         date = result.documents[index - 1].data?.get(HeadNameDB.DATE_DB).toString(),
-                        time = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
+                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
                         observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_DB)
                             .toString(),
                         price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_DB)
@@ -183,7 +183,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
                         dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
                         date = result.documents[index - 1].data?.get(HeadNameDB.DATE_DB).toString(),
-                        time = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
+                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
                         observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_DB)
                             .toString(),
                         price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_DB)
