@@ -53,7 +53,7 @@ class ClientsViewModel: ViewModel() {
 
     fun updateData(collection: String, documentPath: String, keyField: String, updateData: Any){
         viewModelScope.launch {
-            updateDataToFirebase(collection = collection, documentPath = documentPath, keyField = keyField, updateData = updateData){ success ->
+            updateDataToFirebase(collection = collection, documentPath = documentPath, keyField = keyField, data = updateData){ success ->
                 isUpdate.postValue(success)
             }
         }

@@ -21,6 +21,7 @@ import com.angelpr.losjardines.data.model.Client
 import com.angelpr.losjardines.databinding.ActivityRegisterBinding
 import com.angelpr.losjardines.ui.picker.GetPicker
 import com.angelpr.losjardines.ui.viewmodel.ClientsViewModel
+import java.util.Calendar
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -31,7 +32,6 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         systemBar()
 
         // Events of liveData
@@ -41,14 +41,6 @@ class RegisterActivity : AppCompatActivity() {
 
         GetPicker.hourValue.observe(this) { hour ->
             binding.editHour.setText(hour)
-        }
-
-        clientsViewModel.isSend.observe(this) { success ->
-            if (success) {
-
-            } else {
-
-            }
         }
 
         // Events of setOnClickListener
@@ -69,9 +61,16 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(Intent(this, ConsultationActivity::class.java))
         }
 
+        // Event to back previous activity
+        binding.toolbar.setNavigationOnClickListener {
+            finish() // Return the previous screen and close the activity
+        }
+
     }
 
     private fun sendDataOfView() {
+        val collection = Calendar.getInstance().get(Calendar.YEAR).toString()
+
         val room = binding.editRoom.text.toString()
         val date = binding.editDate.text.toString()
         val hour = binding.editHour.text.toString()
@@ -89,6 +88,7 @@ class RegisterActivity : AppCompatActivity() {
         if (conditional) {
             // Send data to server Firebase
             val clientInfo = Client(
+                collection = collection,
                 room = room.toInt(),
                 date = date,
                 hour = hour,
@@ -146,10 +146,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
         }
-
         dialog.show()
-
-
     }
 
 

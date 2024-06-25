@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/editRoom"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:background="@drawable/background_table_item"
+            android:gravity="center"
+            android:text="101"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/editHora"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/editHour"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@drawable/background_table_item"
+            android:gravity="center"
+            android:text="10:30"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/editRoom"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/editDate"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@drawable/background_table_item"
+            android:gravity="center"
+            android:text="10/12/2022"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/editHour"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/editName"
+            android:layout_width="174dp"
+            android:layout_height="60dp"
+            android:background="@drawable/background_table_item"
+            android:gravity="center"
+            android:text="Panduro Ruiz Angel Jesus"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/editDate"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/editDni"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@drawable/background_table_item"
+            android:gravity="center"
+            android:text="71605592"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/editName"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/editOrigin"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@drawable/background_table_item"
+            android:gravity="center"
+            android:text="Lamas"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/editDni"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/editPrice"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:background="@drawable/background_table_item"
+            android:gravity="center"
+            android:text="30"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/editOrigin"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/editObservation"
+            android:layout_width="185dp"
+            android:layout_height="60dp"
+            android:background="@drawable/background_table_item"
+            android:gravity="center"
+            android:text="Falta pagar"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/editPrice"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

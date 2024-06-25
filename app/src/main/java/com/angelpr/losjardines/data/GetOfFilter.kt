@@ -8,14 +8,13 @@ import com.angelpr.losjardines.data.model.HeadNameDB
 import com.angelpr.losjardines.data.model.Months
 import com.google.firebase.firestore.QuerySnapshot
 
-class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister: ClientsRegister) {
+class GetOfFilter(private val result: QuerySnapshot, private val collection: String, private val clientsRegister: ClientsRegister) {
 
     private var clientList = emptyList<Client>()
     private val monthNow =
         Calendar.getInstance().get(Calendar.MONTH) + 1 // Function return 0 in January
 
     fun default(): ClientsRegister {
-
         for (index in result.count() downTo 1) {
             val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_DB)
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
@@ -23,6 +22,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister
             if (monthNow == monthInt) {
                 clientList +=
                     Client(
+                        collection = collection,
                         id = result.documents[index - 1].id,
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
                         dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
@@ -63,6 +63,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister
             ) {
                 clientList +=
                     Client(
+                        collection = collection,
                         id = result.documents[index - 1].id,
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
                         dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
@@ -100,6 +101,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister
             if (monthFilter == monthInt) {
                 clientList +=
                     Client(
+                        collection = collection,
                         id = result.documents[index - 1].id,
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
                         dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
@@ -142,6 +144,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister
             ) {
                 clientList +=
                     Client(
+                        collection = collection,
                         id = result.documents[index - 1].id,
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
                         dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
@@ -179,6 +182,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val clientsRegister
             if (monthFilter == monthInt) {
                 clientList +=
                     Client(
+                        collection = collection,
                         id = result.documents[index - 1].id,
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
                         dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),

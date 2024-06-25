@@ -13,6 +13,16 @@
         android:orientation="vertical"
         android:padding="4dp">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?actionBarSize"
+            android:background="@color/background_default"
+            app:title="@string/txt_toolbar_return"
+            app:titleTextColor="@color/white"
+            app:navigationIcon="@drawable/icon_back"/>
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"

@@ -7,6 +7,8 @@
     <string name="btn_txt_activity_room">HABITACIONES DISPONIBLES</string>
     <string name="btn_txt_save">GUARDAR</string>
     <string name="btn_txt_consultation">CONSULTA</string>
+    <string name="btn_txt_search">Buscar</string>
+    <string name="btn_txt_clear">Limpiar</string>
 
     <!-- Text Title -->
     <string name="txt_habitaciones">N° habitacion *</string>
@@ -17,10 +19,24 @@
     <string name="txt_observation">Observaciones</string>
     <string name="txt_date">Fecha *</string>
     <string name="txt_hour">Hora *</string>
+    <string name="txt_filter">Filtro</string>
 
     <!-- Text Dialog Box-->
     <string name="txt_state_succesfull">Enviado correctamente</string>
     <string name="txt_state_error">Ocurrio un problema</string>
     <string name="txt_state_loading">Enviando..</string>
+
+    <!-- Text toolBar -->
+    <string name="txt_toolbar_return">Regresar</string>
+
+    <!-- Text Table -->
+    <string name="txt_table_room">N° habitacion</string>
+    <string name="txt_table_name">Apellidos y Nombres</string>
+    <string name="txt_table_dni">DNI</string>
+    <string name="txt_table_price">Precio</string>
+    <string name="txt_table_origin">Procedencia</string>
+    <string name="txt_table_observation">Observaciones</string>
+    <string name="txt_table_date">Fecha</string>
+    <string name="txt_table_hour">Hora</string>
 
 </resources>

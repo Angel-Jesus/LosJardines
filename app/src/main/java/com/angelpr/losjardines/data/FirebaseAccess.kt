@@ -15,7 +15,7 @@ object FirebaseAccess {
     private val db: FirebaseFirestore
         get() = Firebase.firestore
 
-    fun sendRegister(clienInfo: Client, succesListener: (Boolean) -> Unit) {
+    fun sendRegister(data: Client, succesListener: (Boolean) -> Unit) {
         // Get date and time that is the documentPath of Cloud Firestore
         val year = Calendar.getInstance().get(Calendar.YEAR).toString()
         val month = Calendar.getInstance().get(Calendar.MONTH) + 1
@@ -27,18 +27,18 @@ object FirebaseAccess {
         val documentPath = "$day$month$year$hour$minute$second"
 
         val client = hashMapOf(
-            HeadNameDB.AYN_DB to clienInfo.name,
-            HeadNameDB.DNI_DB to clienInfo.dni,
-            HeadNameDB.DATE_DB to clienInfo.date,
-            HeadNameDB.TIME_DB to clienInfo.hour,
-            HeadNameDB.OBSERVATION_DB to clienInfo.observation,
-            HeadNameDB.PRICE_DB to clienInfo.price,
-            HeadNameDB.ORIGIN_DB to clienInfo.origin,
-            HeadNameDB.NUMER_ROOM_DB to clienInfo.room
+            HeadNameDB.AYN_DB to data.name,
+            HeadNameDB.DNI_DB to data.dni,
+            HeadNameDB.DATE_DB to data.date,
+            HeadNameDB.TIME_DB to data.hour,
+            HeadNameDB.OBSERVATION_DB to data.observation,
+            HeadNameDB.PRICE_DB to data.price,
+            HeadNameDB.ORIGIN_DB to data.origin,
+            HeadNameDB.NUMER_ROOM_DB to data.room
         )
 
         // Get last ID from Cloud Firestore
-        val query = db.collection(year)
+        val query = db.collection(data.collection)
         query
             .document(documentPath)
             .set(client)
@@ -71,35 +71,40 @@ object FirebaseAccess {
                     FilterType.Default -> callback(
                         GetOfFilter(
                             result = result,
-                            clientsRegister = clientsRegister
+                            clientsRegister = clientsRegister,
+                            collection = collection
                         ).default()
                     )
 
                     FilterType.Mont -> callback(
                         GetOfFilter(
                             result = result,
-                            clientsRegister = clientsRegister
+                            clientsRegister = clientsRegister,
+                            collection = collection
                         ).month()
                     )
 
                     FilterType.Dni -> callback(
                         GetOfFilter(
                             result = result,
-                            clientsRegister = clientsRegister
+                            clientsRegister = clientsRegister,
+                            collection = collection
                         ).dni()
                     )
 
                     FilterType.Origin -> callback(
                         GetOfFilter(
                             result = result,
-                            clientsRegister = clientsRegister
+                            clientsRegister = clientsRegister,
+                            collection = collection
                         ).origin()
                     )
 
                     FilterType.lastMonth -> callback(
                         GetOfFilter(
                             result = result,
-                            clientsRegister = clientsRegister
+                            clientsRegister = clientsRegister,
+                            collection = collection
                         ).lastMonth()
                     )
                 }
@@ -123,10 +128,10 @@ object FirebaseAccess {
             }
     }
 
-    fun updateRegister(collection: String, documentPath: String, key: String, data: Any, callback: (Boolean) -> Unit) {
+    fun updateRegister(collection: String, documentPath: String, keyField: String, data: Any, callback: (Boolean) -> Unit) {
         db.collection(collection)
             .document(documentPath)
-            .update(key, data)
+            .update(keyField, data)
             .addOnSuccessListener {
                 Log.d("estado", "DocumentSnapshot successfully update!")
                 callback(true)
