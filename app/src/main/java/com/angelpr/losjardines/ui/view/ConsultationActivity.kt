@@ -22,6 +22,7 @@ import com.angelpr.losjardines.data.model.Months
 import com.angelpr.losjardines.data.model.SpinnerItem
 import com.angelpr.losjardines.data.model.UpdateData
 import com.angelpr.losjardines.databinding.ActivityConsultationBinding
+import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentDU
 import com.angelpr.losjardines.ui.recycleView.ClientsAdapter
 import com.angelpr.losjardines.ui.viewmodel.ClientsViewModel
 
@@ -45,6 +46,18 @@ class ConsultationActivity : AppCompatActivity() {
 
         // Event to get Data of cloud firebase
         getDefaultData()
+
+        // LiveData
+        clientsViewModel.clientRegisterData.observe(this) { clientRegister ->
+            if (clientRegister.loading) {
+                binding.recycleViewTable.isGone = true
+
+            } else {
+                Log.d("estado", "data: ${clientRegister.clientsList}")
+                binding.recycleViewTable.isGone = false
+                recycleViewCreate(clientRegister)
+            }
+        }
 
         // Events of setOnClickListener
         binding.btnSearch.setOnClickListener {
@@ -90,8 +103,8 @@ class ConsultationActivity : AppCompatActivity() {
     }
 
     private fun getDefaultData() {
-        clientsViewModel.getData(ClientsRegister())
         dialogViewLoadingGetData()
+        clientsViewModel.getData(ClientsRegister())
     }
 
     private fun dialogViewLoadingDU(){
@@ -105,19 +118,13 @@ class ConsultationActivity : AppCompatActivity() {
             setCancelable(false)
             window?.setBackgroundDrawableResource(android.R.color.transparent)
         }
+        dialog.show()
 
-        clientsViewModel.clientRegisterData.observe(this) { clientRegister ->
-            if (clientRegister.loading) {
-                binding.recycleViewTable.isGone = true
-
-            } else {
+        clientsViewModel.clientRegisterData.observe(this) {clientRegister ->
+            if(clientRegister.loading.not()){
                 dialog.dismiss()
-                binding.recycleViewTable.isGone = false
-                recycleViewCreate(clientRegister)
             }
         }
-
-        dialog.show()
     }
 
     private fun messageAlert(message: String) {
@@ -141,7 +148,8 @@ class ConsultationActivity : AppCompatActivity() {
 
     private fun onItemSelected(data: UpdateData) {
         // Select to update data and showing dialog
-        Log.d("estado", "data: $data")
+        //Log.d("estado", "data: $data")
+        DialogFragmentDU(this, data).show(supportFragmentManager, "DialogFragmentDU")
     }
 
     private fun spinnerFilterMonth() {

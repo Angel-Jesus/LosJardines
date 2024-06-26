@@ -36,7 +36,7 @@ class ClientsViewModel: ViewModel() {
     fun getData(clientsRegister: ClientsRegister){
         viewModelScope.launch {
              // State of start loading
-            clientRegisterData.postValue(ClientsRegister(loading = true))
+            //clientRegisterData.postValue(ClientsRegister(loading = true))
             getDataToFirebase(clientsRegister = clientsRegister){ callback ->
                 clientRegisterData.postValue(callback)
             }
