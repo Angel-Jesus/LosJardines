@@ -80,7 +80,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                     )
                 flag = !isMonthEmpty
             } else {
-                if (flag || index == 1) {
+                if (flag) {
                     break
                 }
             }
@@ -96,7 +96,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
 
             val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_DB)
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
-            Log.d("estado", "id: ${result.documents[index - 1].id}")
+            //Log.d("estado", "id: ${result.count()}")
 
             if (monthFilter == monthInt) {
                 clientList +=
@@ -118,7 +118,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                     )
                 flag = true
             } else {
-                if (flag || index == 1) {
+                if (flag) {
                     break
                 }
             }
@@ -161,7 +161,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                     )
                 flag = !isMonthEmpty
             } else {
-                if (flag || index == 1) {
+                if (flag) {
                     break
                 }
             }
@@ -199,7 +199,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                     )
                 flag = true
             } else {
-                if (flag || index == 1) {
+                if (flag) {
                     break
                 }
             }

@@ -9,6 +9,8 @@
     <string name="btn_txt_consultation">CONSULTA</string>
     <string name="btn_txt_search">Buscar</string>
     <string name="btn_txt_clear">Limpiar</string>
+    <string name="btn_txt_delete_register">Eliminar registro</string>
+    <string name="btn_txt_update_data">Actualizar dato</string>
 
     <!-- Text Title -->
     <string name="txt_habitaciones">N° habitacion *</string>
@@ -21,10 +23,14 @@
     <string name="txt_hour">Hora *</string>
     <string name="txt_filter">Filtro</string>
 
+    <!-- Text hint EditText -->
+    <string name="txt_changed">Corregir dato</string>
+
     <!-- Text Dialog Box-->
     <string name="txt_state_succesfull">Enviado correctamente</string>
     <string name="txt_state_error">Ocurrio un problema</string>
-    <string name="txt_state_loading">Enviando..</string>
+    <string name="txt_state_sending">Enviando..</string>
+    <string name="txt_state_loading">Obteniendo datos</string>
 
     <!-- Text toolBar -->
     <string name="txt_toolbar_return">Regresar</string>

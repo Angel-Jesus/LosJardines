@@ -1,8 +1,6 @@
 package com.angelpr.losjardines.data.model
 
 object SpinnerItem {
-    val SPINNER_FILTER = listOf("Aplicar Filtro", "Procedencia", "Mes", "DNI")
-
     val SPINNER_MONTH = listOf(
         "Seleccionar mes",
         "Enero",
@@ -18,4 +16,13 @@ object SpinnerItem {
         "Noviembre",
         "Diciembre"
     )
+
+    val SPINNER_FILTER = listOf("Aplicar Filtro", "Procedencia", "Mes", "DNI")
+
+    enum class SpinnerPosition {
+        None,
+        Origin,
+        Month,
+        DNI
+    }
 }

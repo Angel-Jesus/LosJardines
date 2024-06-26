@@ -58,7 +58,7 @@ object FirebaseAccess {
         val yearNow = Calendar.getInstance().get(Calendar.YEAR)
         val monthNow = Calendar.getInstance().get(Calendar.MONTH)
 
-        val collection = if (clientsRegister.timeFilter.ordinal < monthNow) {
+        val collection = if (clientsRegister.timeFilter.ordinal > monthNow) {
             (yearNow - 1).toString()
         } else {
             yearNow.toString()
