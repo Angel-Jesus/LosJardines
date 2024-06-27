@@ -2,101 +2,101 @@ package com.angelpr.losjardines.ui.recycleView
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.angelpr.losjardines.data.model.Client
+import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.data.model.HeadNameDB
-import com.angelpr.losjardines.data.model.UpdateData
+import com.angelpr.losjardines.data.model.UpdateDataModel
 import com.angelpr.losjardines.databinding.ItemClientsBinding
 
 class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val binding = ItemClientsBinding.bind(view)
 
-    fun render(clien: Client, onClickListener: (UpdateData) -> Unit) {
-        binding.editRoom.text = clien.room.toString()
-        binding.editHour.text = clien.hour
-        binding.editDate.text = clien.date
-        binding.editName.text = clien.name
-        binding.editDni.text = clien.dni
-        binding.editOrigin.text = clien.origin
-        binding.editPrice.text = clien.price.toString()
-        binding.editObservation.text = clien.observation
+    fun render(client: ClientInfoModel, onClickListener: (UpdateDataModel) -> Unit) {
+        binding.editRoom.text = client.room.toString()
+        binding.editHour.text = client.hour
+        binding.editDate.text = client.date
+        binding.editName.text = client.name
+        binding.editDni.text = client.dni
+        binding.editOrigin.text = client.origin
+        binding.editPrice.text = client.price.toString()
+        binding.editObservation.text = client.observation
 
         binding.editRoom.setOnClickListener {
             onClickListener(
-                UpdateData(
-                    collection = clien.collection,
-                    documentPath = clien.id,
+                UpdateDataModel(
+                    collection = client.collection,
+                    documentPath = client.id,
                     keyField = HeadNameDB.NUMER_ROOM_DB,
-                    data = clien.room,
+                    data = client.room,
                 )
             )
         }
         binding.editHour.setOnClickListener {
             onClickListener(
-                UpdateData(
-                    collection = clien.collection,
-                    documentPath = clien.id,
+                UpdateDataModel(
+                    collection = client.collection,
+                    documentPath = client.id,
                     keyField = HeadNameDB.TIME_DB,
-                    data = clien.hour,
+                    data = client.hour,
                 )
             )
         }
         binding.editDate.setOnClickListener {
             onClickListener(
-                UpdateData(
-                    collection = clien.collection,
-                    documentPath = clien.id,
+                UpdateDataModel(
+                    collection = client.collection,
+                    documentPath = client.id,
                     keyField = HeadNameDB.DATE_DB,
-                    data = clien.date,
+                    data = client.date,
                 )
             )
         }
         binding.editName.setOnClickListener {
             onClickListener(
-                UpdateData(
-                    collection = clien.collection,
-                    documentPath = clien.id,
+                UpdateDataModel(
+                    collection = client.collection,
+                    documentPath = client.id,
                     keyField = HeadNameDB.AYN_DB,
-                    data = clien.name,
+                    data = client.name,
                 )
             )
         }
         binding.editDni.setOnClickListener {
             onClickListener(
-                UpdateData(
-                    collection = clien.collection,
-                    documentPath = clien.id,
+                UpdateDataModel(
+                    collection = client.collection,
+                    documentPath = client.id,
                     keyField = HeadNameDB.DNI_DB,
-                    data = clien.dni,
+                    data = client.dni,
                 )
             )
         }
         binding.editOrigin.setOnClickListener {
             onClickListener(
-                UpdateData(
-                    collection = clien.collection,
-                    documentPath = clien.id,
+                UpdateDataModel(
+                    collection = client.collection,
+                    documentPath = client.id,
                     keyField = HeadNameDB.ORIGIN_DB,
-                    data = clien.origin,
+                    data = client.origin,
                 )
             )
         }
         binding.editPrice.setOnClickListener {
             onClickListener(
-                UpdateData(
-                    collection = clien.collection,
-                    documentPath = clien.id,
+                UpdateDataModel(
+                    collection = client.collection,
+                    documentPath = client.id,
                     keyField = HeadNameDB.PRICE_DB,
-                    data = clien.price,
+                    data = client.price,
                 )
             )
         }
         binding.editObservation.setOnClickListener {
             onClickListener(
-                UpdateData(
-                    collection = clien.collection,
-                    documentPath = clien.id,
+                UpdateDataModel(
+                    collection = client.collection,
+                    documentPath = client.id,
                     keyField = HeadNameDB.OBSERVATION_DB,
-                    data = clien.observation,
+                    data = client.observation,
                 )
             )
         }

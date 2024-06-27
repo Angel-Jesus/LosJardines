@@ -2,7 +2,6 @@ package com.angelpr.losjardines.ui.dialogFragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,15 @@ import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.DialogFragment
 import com.angelpr.losjardines.R
 import com.angelpr.losjardines.data.model.HeadNameDB
-import com.angelpr.losjardines.data.model.UpdateData
+import com.angelpr.losjardines.data.model.UpdateDataModel
 import com.angelpr.losjardines.ui.picker.GetPicker
+import com.angelpr.losjardines.ui.viewmodel.ClientsViewModel
 import com.google.android.material.textfield.TextInputEditText
 
 class DialogFragmentDU(
     private val activity: AppCompatActivity,
-    private var dataUpdate: UpdateData
+    private val clienteViewModel: ClientsViewModel,
+    private var dataUpdate: UpdateDataModel
 ) : DialogFragment() {
 
     @SuppressLint("MissingInflatedId", "SetTextI18n")
@@ -35,7 +36,7 @@ class DialogFragmentDU(
         val txtTitle = rootView.findViewById<TextView>(R.id.txtTitle)
         val editChanged = rootView.findViewById<TextInputEditText>(R.id.edit_changed)
 
-        when (dataUpdate.documentPath) {
+        when (dataUpdate.keyField) {
             HeadNameDB.AYN_DB -> {
                 txtTitle.text = "¿Desea cambiar el nombre y apellido?"
             }
@@ -100,12 +101,15 @@ class DialogFragmentDU(
             } else {
                 editChanged.text.toString()
             }
-
-            Log.d("estado", "actualizar : $dataUpdate")
+            //Log.d("estado", "actualizar : $dataUpdate")
+            clienteViewModel.updateData(collection = dataUpdate.collection, documentPath = dataUpdate.documentPath, keyField = dataUpdate.keyField, updateData = dataUpdate.data)
+            dismiss()
         }
 
         btnDelete.setOnClickListener {
-            Log.d("estado", "actualizar : $dataUpdate")
+            //Log.d("estado", "actualizar : $dataUpdate")
+            clienteViewModel.deleteData(collection = dataUpdate.collection, documentPath = dataUpdate.documentPath)
+            dismiss()
         }
 
 

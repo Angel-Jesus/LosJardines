@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.firebase.firestore)
+    // Implementation to use MPAndroidChart
+    implementation(libs.philjay.mpandroidchart)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

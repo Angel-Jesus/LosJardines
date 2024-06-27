@@ -1,12 +1,17 @@
 package com.angelpr.losjardines.ui.view
 
 import android.app.Dialog
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -16,11 +21,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angelpr.losjardines.R
-import com.angelpr.losjardines.data.model.ClientsRegister
+import com.angelpr.losjardines.data.model.ActionProcess
+import com.angelpr.losjardines.data.model.ClientsRegisterModel
 import com.angelpr.losjardines.data.model.FilterType
 import com.angelpr.losjardines.data.model.Months
 import com.angelpr.losjardines.data.model.SpinnerItem
-import com.angelpr.losjardines.data.model.UpdateData
+import com.angelpr.losjardines.data.model.UpdateDataModel
 import com.angelpr.losjardines.databinding.ActivityConsultationBinding
 import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentDU
 import com.angelpr.losjardines.ui.recycleView.ClientsAdapter
@@ -44,20 +50,56 @@ class ConsultationActivity : AppCompatActivity() {
         spinnerFilterOption()
         spinnerFilterMonth()
 
-        // Event to get Data of cloud firebase
-        getDefaultData()
+        // Event to get Data Default of cloud firebase
+        dialogViewLoadingGetData()
+        clientsViewModel.getData(ClientsRegisterModel())
 
-        // LiveData
+        // Events of LiveData
         clientsViewModel.clientRegisterData.observe(this) { clientRegister ->
             if (clientRegister.loading) {
                 binding.recycleViewTable.isGone = true
 
             } else {
-                Log.d("estado", "data: ${clientRegister.clientsList}")
+                //Log.d("estado", "data: ${clientRegister.clientsList}")
                 binding.recycleViewTable.isGone = false
                 recycleViewCreate(clientRegister)
             }
         }
+
+        clientsViewModel.isDelete.observe(this) { isDelete ->
+            when {
+                isDelete!! == ActionProcess.LOADING -> {
+                    dialogViewLoadingGetData()
+                    Log.d("estado", "Delete loading")
+                }
+                isDelete == ActionProcess.SUCCESS -> {
+                    clientsViewModel.getData(ClientsRegisterModel())
+                    Log.d("estado", "Delete sucess")
+                }
+                isDelete == ActionProcess.ERROR -> {
+                    dialogViewError()
+                    Log.d("estado", "Delete error")
+                }
+            }
+        }
+
+        clientsViewModel.isUpdate.observe(this) { isUpdate ->
+            when{
+                isUpdate!! == ActionProcess.LOADING -> {
+                    dialogViewLoadingGetData()
+                    Log.d("estado", "Update loading")
+                }
+                isUpdate == ActionProcess.SUCCESS -> {
+                    clientsViewModel.getData(ClientsRegisterModel())
+                    Log.d("estado", "Update sucess")
+                }
+                isUpdate == ActionProcess.ERROR -> {
+                    dialogViewError()
+                    Log.d("estado", "Update error")
+                }
+            }
+        }
+
 
         // Events of setOnClickListener
         binding.btnSearch.setOnClickListener {
@@ -67,12 +109,31 @@ class ConsultationActivity : AppCompatActivity() {
         binding.btnClear.setOnClickListener {
             // Clear data
             binding.spinnerFilter.setSelection(SpinnerItem.SpinnerPosition.None.ordinal)
-            getDefaultData()
+            // Event to get Data Default of cloud firebase
+            dialogViewLoadingGetData()
+            clientsViewModel.getData(ClientsRegisterModel())
         }
 
-        // Event to back previous activity
+        // Event ToolBar action
         binding.toolbar.setNavigationOnClickListener {
             finish() // Return the previous screen and close the activity
+        }
+
+        binding.toolbar.setOnMenuItemClickListener {menuItem ->
+            when (menuItem.itemId) {
+                R.id.dataStatic -> {
+                    Log.d("estado", "click dataStatic")
+                    startActivity(Intent(this, StatisticsActivity::class.java))
+                    true
+                }
+                R.id.loading -> {
+                    Log.d("estado", "click loading")
+                    dialogViewLoadingGetData()
+                    clientsViewModel.getData(ClientsRegisterModel())
+                    true
+                }
+                else -> false
+            }
         }
 
     }
@@ -91,7 +152,7 @@ class ConsultationActivity : AppCompatActivity() {
 
             else -> {
                 clientsViewModel.getData(
-                    ClientsRegister(
+                    ClientsRegisterModel(
                         filter = typeFilter,
                         descriptionFilter = description,
                         timeFilter = monthFilter
@@ -102,13 +163,24 @@ class ConsultationActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDefaultData() {
-        dialogViewLoadingGetData()
-        clientsViewModel.getData(ClientsRegister())
-    }
+    private fun dialogViewError() {
+        val dialog = Dialog(this).apply {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            setContentView(R.layout.dialog_box_status)
+            setCancelable(true)
+            window?.setBackgroundDrawableResource(android.R.color.transparent)
+        }
+        val textInfo = dialog.findViewById<TextView>(R.id.textInfo)
+        val progressBar = dialog.findViewById<ProgressBar>(R.id.progressBar)
+        val imageView = dialog.findViewById<ImageView>(R.id.stateIcon)
 
-    private fun dialogViewLoadingDU(){
+        progressBar.isGone = true
+        imageView.isGone = false
 
+        textInfo.text = getString(R.string.txt_state_error)
+        imageView.setImageResource(R.drawable.error)
+
+        dialog.show()
     }
 
     private fun dialogViewLoadingGetData() {
@@ -120,8 +192,8 @@ class ConsultationActivity : AppCompatActivity() {
         }
         dialog.show()
 
-        clientsViewModel.clientRegisterData.observe(this) {clientRegister ->
-            if(clientRegister.loading.not()){
+        clientsViewModel.clientRegisterData.observe(this) { clientRegister ->
+            if (clientRegister.loading.not()) {
                 dialog.dismiss()
             }
         }
@@ -137,19 +209,21 @@ class ConsultationActivity : AppCompatActivity() {
         }
     }
 
-    private fun recycleViewCreate(clients: ClientsRegister) {
+    private fun recycleViewCreate(clients: ClientsRegisterModel) {
         binding.recycleViewTable.setHasFixedSize(true)
         binding.recycleViewTable.layoutManager = LinearLayoutManager(this)
         binding.recycleViewTable.adapter = ClientsAdapter(clients.clientsList) { data ->
             onItemSelected(data)
         }
-
     }
 
-    private fun onItemSelected(data: UpdateData) {
+    private fun onItemSelected(data: UpdateDataModel) {
         // Select to update data and showing dialog
-        //Log.d("estado", "data: $data")
-        DialogFragmentDU(this, data).show(supportFragmentManager, "DialogFragmentDU")
+        DialogFragmentDU(
+            activity = this,
+            clienteViewModel = clientsViewModel,
+            dataUpdate = data
+        ).show(supportFragmentManager, "DialogFragmentDU")
     }
 
     private fun spinnerFilterMonth() {

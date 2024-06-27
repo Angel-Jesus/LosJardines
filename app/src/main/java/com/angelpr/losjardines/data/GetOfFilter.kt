@@ -1,27 +1,26 @@
 package com.angelpr.losjardines.data
 
 import android.icu.util.Calendar
-import android.util.Log
-import com.angelpr.losjardines.data.model.Client
-import com.angelpr.losjardines.data.model.ClientsRegister
+import com.angelpr.losjardines.data.model.ClientInfoModel
+import com.angelpr.losjardines.data.model.ClientsRegisterModel
 import com.angelpr.losjardines.data.model.HeadNameDB
 import com.angelpr.losjardines.data.model.Months
 import com.google.firebase.firestore.QuerySnapshot
 
-class GetOfFilter(private val result: QuerySnapshot, private val collection: String, private val clientsRegister: ClientsRegister) {
+class GetOfFilter(private val result: QuerySnapshot, private val collection: String, private val clientsRegisterModel: ClientsRegisterModel) {
 
-    private var clientList = emptyList<Client>()
+    private var clientInfoModelList = emptyList<ClientInfoModel>()
     private val monthNow =
         Calendar.getInstance().get(Calendar.MONTH) + 1 // Function return 0 in January
 
-    fun default(): ClientsRegister {
+    fun default(): ClientsRegisterModel {
         for (index in result.count() downTo 1) {
             val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_DB)
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
 
             if (monthNow == monthInt) {
-                clientList +=
-                    Client(
+                clientInfoModelList +=
+                    ClientInfoModel(
                         collection = collection,
                         id = result.documents[index - 1].id,
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
@@ -41,14 +40,14 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                 break
             }
         }
-        return ClientsRegister(clientsList = clientList, loading = false)
+        return ClientsRegisterModel(clientsList = clientInfoModelList, loading = false)
     }
 
-    fun origin(): ClientsRegister {
+    fun origin(): ClientsRegisterModel {
         var flag = false
 
-        val isMonthEmpty = clientsRegister.timeFilter == Months.NONE
-        val monthFilter = clientsRegister.timeFilter.ordinal + 1
+        val isMonthEmpty = clientsRegisterModel.timeFilter == Months.NONE
+        val monthFilter = clientsRegisterModel.timeFilter.ordinal + 1
 
         for (index in result.count() downTo 1) {
 
@@ -57,12 +56,12 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
             val origin = result.documents[index - 1].get(HeadNameDB.ORIGIN_DB)
 
-            if (isMonthEmpty.and(origin == clientsRegister.descriptionFilter) || isMonthEmpty.not().and(
-                    origin == clientsRegister.descriptionFilter && monthInt == monthFilter
+            if (isMonthEmpty.and(origin == clientsRegisterModel.descriptionFilter) || isMonthEmpty.not().and(
+                    origin == clientsRegisterModel.descriptionFilter && monthInt == monthFilter
                 )
             ) {
-                clientList +=
-                    Client(
+                clientInfoModelList +=
+                    ClientInfoModel(
                         collection = collection,
                         id = result.documents[index - 1].id,
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
@@ -85,12 +84,12 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                 }
             }
         }
-        return ClientsRegister(clientsList = clientList, loading = false)
+        return ClientsRegisterModel(clientsList = clientInfoModelList, loading = false)
     }
 
-    fun month(): ClientsRegister {
+    fun month(): ClientsRegisterModel {
         var flag = false
-        val monthFilter = clientsRegister.timeFilter.ordinal + 1
+        val monthFilter = clientsRegisterModel.timeFilter.ordinal + 1
 
         for (index in result.count() downTo 1) {
 
@@ -99,8 +98,8 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
             //Log.d("estado", "id: ${result.count()}")
 
             if (monthFilter == monthInt) {
-                clientList +=
-                    Client(
+                clientInfoModelList +=
+                    ClientInfoModel(
                         collection = collection,
                         id = result.documents[index - 1].id,
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
@@ -123,13 +122,13 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                 }
             }
         }
-        return ClientsRegister(clientsList = clientList, loading = false)
+        return ClientsRegisterModel(clientsList = clientInfoModelList, loading = false)
     }
 
-    fun dni(): ClientsRegister {
+    fun dni(): ClientsRegisterModel {
         var flag = false
-        val monthFilter = clientsRegister.timeFilter.ordinal + 1
-        val isMonthEmpty = clientsRegister.timeFilter == Months.NONE
+        val monthFilter = clientsRegisterModel.timeFilter.ordinal + 1
+        val isMonthEmpty = clientsRegisterModel.timeFilter == Months.NONE
 
         for (index in result.count() downTo 1) {
 
@@ -138,12 +137,12 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
             val dni = result.documents[index - 1].get(HeadNameDB.DNI_DB)
 
-            if (isMonthEmpty.and(dni == clientsRegister.descriptionFilter) || isMonthEmpty.not().and(
-                    dni == clientsRegister.descriptionFilter && monthInt == monthFilter
+            if (isMonthEmpty.and(dni == clientsRegisterModel.descriptionFilter) || isMonthEmpty.not().and(
+                    dni == clientsRegisterModel.descriptionFilter && monthInt == monthFilter
                 )
             ) {
-                clientList +=
-                    Client(
+                clientInfoModelList +=
+                    ClientInfoModel(
                         collection = collection,
                         id = result.documents[index - 1].id,
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
@@ -167,12 +166,12 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
             }
         }
 
-        return ClientsRegister(clientsList = clientList, loading = false)
+        return ClientsRegisterModel(clientsList = clientInfoModelList, loading = false)
     }
 
-    fun lastMonth(): ClientsRegister {
+    fun lastMonth(): ClientsRegisterModel {
         var flag = false
-        val monthFilter = clientsRegister.timeFilter.ordinal + 1
+        val monthFilter = clientsRegisterModel.timeFilter.ordinal + 1
 
         for (index in result.count() downTo 1) {
 
@@ -180,8 +179,8 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
 
             if (monthFilter == monthInt) {
-                clientList +=
-                    Client(
+                clientInfoModelList +=
+                    ClientInfoModel(
                         collection = collection,
                         id = result.documents[index - 1].id,
                         name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
@@ -204,7 +203,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                 }
             }
         }
-        return ClientsRegister(clientsList = clientList, loading = false)
+        return ClientsRegisterModel(clientsList = clientInfoModelList, loading = false)
     }
 
 }

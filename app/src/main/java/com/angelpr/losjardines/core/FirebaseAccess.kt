@@ -1,8 +1,9 @@
-package com.angelpr.losjardines.data
+package com.angelpr.losjardines.core
 
 import android.util.Log
-import com.angelpr.losjardines.data.model.Client
-import com.angelpr.losjardines.data.model.ClientsRegister
+import com.angelpr.losjardines.data.GetOfFilter
+import com.angelpr.losjardines.data.model.ClientInfoModel
+import com.angelpr.losjardines.data.model.ClientsRegisterModel
 import com.angelpr.losjardines.data.model.FilterType
 import com.angelpr.losjardines.data.model.HeadNameDB
 import com.google.firebase.Firebase
@@ -15,16 +16,17 @@ object FirebaseAccess {
     private val db: FirebaseFirestore
         get() = Firebase.firestore
 
-    fun sendRegister(data: Client, succesListener: (Boolean) -> Unit) {
+
+    fun sendRegister(data: ClientInfoModel, succesListener: (Boolean) -> Unit) {
         // Get date and time that is the documentPath of Cloud Firestore
         val year = Calendar.getInstance().get(Calendar.YEAR).toString()
-        val month = Calendar.getInstance().get(Calendar.MONTH) + 1
-        val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        val minute = Calendar.getInstance().get(Calendar.MINUTE)
-        val second = Calendar.getInstance().get(Calendar.SECOND)
+        val month = convertIntToStr(Calendar.getInstance().get(Calendar.MONTH) + 1)
+        val day = convertIntToStr(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+        val hour = convertIntToStr(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+        val minute = convertIntToStr(Calendar.getInstance().get(Calendar.MINUTE))
+        val second = convertIntToStr(Calendar.getInstance().get(Calendar.SECOND))
 
-        val documentPath = "$day$month$year$hour$minute$second"
+        val documentPath = "$year$month$day$hour$minute$second"
 
         val client = hashMapOf(
             HeadNameDB.AYN_DB to data.name,
@@ -47,18 +49,18 @@ object FirebaseAccess {
                 succesListener(true)
             }
             .addOnFailureListener { error ->
-                Log.w("Firestore", "Error adding document", error)
+                Log.w("estado", "Error adding document", error)
                 succesListener(false)
             }
 
     }
 
-    fun getRegister(clientsRegister: ClientsRegister, callback: (ClientsRegister) -> Unit) {
+    fun getRegister(clientsRegisterModel: ClientsRegisterModel, callback: (ClientsRegisterModel) -> Unit) {
 
         val yearNow = Calendar.getInstance().get(Calendar.YEAR)
         val monthNow = Calendar.getInstance().get(Calendar.MONTH)
 
-        val collection = if (clientsRegister.timeFilter.ordinal > monthNow && clientsRegister.filter != FilterType.Default) {
+        val collection = if (clientsRegisterModel.timeFilter.ordinal > monthNow && clientsRegisterModel.filter != FilterType.Default) {
             (yearNow - 1).toString()
         } else {
             yearNow.toString()
@@ -67,11 +69,11 @@ object FirebaseAccess {
         db.collection(collection)
             .get()
             .addOnSuccessListener { result ->
-                when (clientsRegister.filter) {
+                when (clientsRegisterModel.filter) {
                     FilterType.Default -> callback(
                         GetOfFilter(
                             result = result,
-                            clientsRegister = clientsRegister,
+                            clientsRegisterModel = clientsRegisterModel,
                             collection = collection
                         ).default()
                     )
@@ -79,7 +81,7 @@ object FirebaseAccess {
                     FilterType.Mont -> callback(
                         GetOfFilter(
                             result = result,
-                            clientsRegister = clientsRegister,
+                            clientsRegisterModel = clientsRegisterModel,
                             collection = collection
                         ).month()
                     )
@@ -87,7 +89,7 @@ object FirebaseAccess {
                     FilterType.Dni -> callback(
                         GetOfFilter(
                             result = result,
-                            clientsRegister = clientsRegister,
+                            clientsRegisterModel = clientsRegisterModel,
                             collection = collection
                         ).dni()
                     )
@@ -95,7 +97,7 @@ object FirebaseAccess {
                     FilterType.Origin -> callback(
                         GetOfFilter(
                             result = result,
-                            clientsRegister = clientsRegister,
+                            clientsRegisterModel = clientsRegisterModel,
                             collection = collection
                         ).origin()
                     )
@@ -103,14 +105,14 @@ object FirebaseAccess {
                     FilterType.lastMonth -> callback(
                         GetOfFilter(
                             result = result,
-                            clientsRegister = clientsRegister,
+                            clientsRegisterModel = clientsRegisterModel,
                             collection = collection
                         ).lastMonth()
                     )
                 }
             }
             .addOnFailureListener { error ->
-                Log.w("Firestore", "Error getting documents.", error)
+                Log.w("estado", "Error getting documents.", error)
             }
     }
 
@@ -123,7 +125,7 @@ object FirebaseAccess {
                 callback(true)
             }
             .addOnFailureListener { error ->
-                Log.w("Firestore", "Error adding document", error)
+                Log.w("estado", "Error adding document", error)
                 callback(false)
             }
     }
@@ -137,8 +139,11 @@ object FirebaseAccess {
                 callback(true)
             }
             .addOnFailureListener { error ->
-                Log.w("Firestore", "Error adding document", error)
+                Log.w("estado", "Error adding document", error)
                 callback(false)
             }
     }
+
+    private fun convertIntToStr(value: Int): String = if(value < 10 ) { "0$value" } else { "$value" }
+
 }

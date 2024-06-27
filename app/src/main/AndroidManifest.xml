@@ -17,6 +17,9 @@
         android:theme="@style/Theme.LosJardines"
         tools:targetApi="31">
         <activity
+            android:name=".ui.view.StatisticsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.RoomActivity"
             android:exported="false" />
         <activity

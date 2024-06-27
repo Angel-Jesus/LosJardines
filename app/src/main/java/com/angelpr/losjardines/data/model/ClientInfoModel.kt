@@ -1,6 +1,6 @@
 package com.angelpr.losjardines.data.model
 
-data class Client(
+data class ClientInfoModel(
     var collection: String,
     var id: String = "",
     var name: String,

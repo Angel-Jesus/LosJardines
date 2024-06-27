@@ -2,7 +2,6 @@ package com.angelpr.losjardines.ui.view
 
 import android.app.Dialog
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.Window
 import android.widget.ImageView
@@ -15,9 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
-import androidx.lifecycle.lifecycleScope
 import com.angelpr.losjardines.R
-import com.angelpr.losjardines.data.model.Client
+import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.databinding.ActivityRegisterBinding
 import com.angelpr.losjardines.ui.picker.GetPicker
 import com.angelpr.losjardines.ui.viewmodel.ClientsViewModel
@@ -87,7 +85,7 @@ class RegisterActivity : AppCompatActivity() {
 
         if (conditional) {
             // Send data to server Firebase
-            val clientInfo = Client(
+            val clientInfoModel = ClientInfoModel(
                 collection = collection,
                 room = room.toInt(),
                 date = date,
@@ -98,7 +96,7 @@ class RegisterActivity : AppCompatActivity() {
                 origin = origin,
                 observation = observation
             )
-            clientsViewModel.sendData(clientInfo)
+            clientsViewModel.sendData(clientInfoModel)
             dialogView()
         } else {
             // Show Alert Dialog to fill all information except observation
