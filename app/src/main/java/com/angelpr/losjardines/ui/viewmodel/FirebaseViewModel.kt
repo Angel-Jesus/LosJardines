@@ -8,21 +8,25 @@ import com.angelpr.losjardines.data.model.ActionProcess
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
 import com.angelpr.losjardines.data.model.FilterType
-import com.angelpr.losjardines.data.model.StatiticsModel
+import com.angelpr.losjardines.data.model.Months
+import com.angelpr.losjardines.data.model.RoomModel
+import com.angelpr.losjardines.data.model.StatisticsModel
 import com.angelpr.losjardines.domain.DeleteDataToFirebase
 import com.angelpr.losjardines.domain.GetDataToFirebase
+import com.angelpr.losjardines.domain.GetRoomToFirebase
 import com.angelpr.losjardines.domain.GetStatistics
 import com.angelpr.losjardines.domain.SendDataToFirebase
 import com.angelpr.losjardines.domain.UpdateDataToFirebase
 import kotlinx.coroutines.launch
 
-class ClientsViewModel : ViewModel() {
+class FirebaseViewModel : ViewModel() {
 
     private val sendDataToFirebase = SendDataToFirebase()
     private val getDataToFirebase = GetDataToFirebase()
+    private val getStatistics = GetStatistics()
+    private val getRoomToFirebase = GetRoomToFirebase()
     private val deleteDataToFirebase = DeleteDataToFirebase()
     private val updateDataToFirebase = UpdateDataToFirebase()
-    private val getStatistics = GetStatistics()
 
     val isSend = MutableLiveData<Boolean>()
     val isDelete = MutableLiveData<ActionProcess>()
@@ -30,7 +34,8 @@ class ClientsViewModel : ViewModel() {
     val isStatistics = MutableLiveData<Boolean>()
 
     val clientRegisterData = MutableLiveData<ClientsRegisterModel>()
-    val statiticsCLientData = MutableLiveData<StatiticsModel>()
+    val statisticsClientData = MutableLiveData<StatisticsModel>()
+    val roomData = MutableLiveData<List<RoomModel>>()
 
     fun sendData(clienInfo: ClientInfoModel) {
         viewModelScope.launch {
@@ -49,10 +54,24 @@ class ClientsViewModel : ViewModel() {
                 if (clientsRegisterModel.filter != FilterType.lastMonth) {
                     clientRegisterData.postValue(callback)
                 } else {
-                    statiticsCLientData.postValue(getStatistics(callback.clientsList))
+
+                    statisticsClientData.postValue(
+                        getStatistics(
+                            month = getMonthStr(clientsRegisterModel.timeFilter),
+                            clientsRegister = callback.clientsList
+                        )
+                    )
                     isStatistics.postValue(true)
                 }
 
+            }
+        }
+    }
+
+    fun getRoomInfo(){
+        viewModelScope.launch {
+            getRoomToFirebase{roomList ->
+                roomData.postValue(roomList)
             }
         }
     }
@@ -90,6 +109,22 @@ class ClientsViewModel : ViewModel() {
         }
     }
 
+    private fun getMonthStr(month: Months): String {
+        return when (month) {
+            Months.JANUARY -> "Enero"
+            Months.FEBRUARY -> "Febrero"
+            Months.MARCH -> "Marzo"
+            Months.APRIL -> "Abril"
+            Months.MAY -> "Mayo"
+            Months.JUNE -> "Junio"
+            Months.JULY -> "Julio"
+            Months.AUGUST -> "Agosto"
+            Months.SEPTEMBER -> "Septiembre"
+            Months.OCTOBER -> "Octubre"
+            Months.NOVEMBER -> "Noviembre"
+            else -> "Diciembre"
+        }
+    }
 
     override fun onCleared() {
         super.onCleared()

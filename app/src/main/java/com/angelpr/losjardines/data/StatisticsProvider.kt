@@ -1,17 +1,24 @@
 package com.angelpr.losjardines.data
 
 import android.icu.util.Calendar
+import android.util.Log
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.data.model.Months
-import com.angelpr.losjardines.data.model.StatiticsModel
+import com.angelpr.losjardines.data.model.StatisticsModel
+import com.github.mikephil.charting.data.BarEntry
 
 class StatisticsProvider {
 
-    private var statisticsDay = emptyList<StatiticsModel.Description>()
-    private var statisticsRoom = emptyList<StatiticsModel.Description>()
-    private var statisticsCity = emptyList<StatiticsModel.Description>()
+    private var labelDay = emptyList<String>()
+    private var entrieDays = emptyList<BarEntry>()
 
-    fun getStatistics(clientsRegister: List<ClientInfoModel>): StatiticsModel {
+    private var labelRoom = emptyList<String>()
+    private var entrieRoom = emptyList<BarEntry>()
+
+    private var labelCity = emptyList<String>()
+    private var entrieCity = emptyList<BarEntry>()
+
+    fun getStatistics(monthLast: String, clientsRegister: List<ClientInfoModel>): StatisticsModel {
 
 
         // Get how many days there are in the previous month
@@ -43,33 +50,53 @@ class StatisticsProvider {
             } else {
                 "${month + 1}"
             }
-            statisticsDay += StatiticsModel.Description(
-                description = "Dia $day",
-                value = clientsEachDay["$dayStr$months$year"] ?: 0
-            )
+
+            labelDay += "$day"
+            entrieDays += BarEntry((day - 1).toFloat(), clientsEachDay["$dayStr/$months/$year"]?.toFloat() ?: 0.toFloat())
+
         }
+
+        //Log.d("estado", "daysLabel: $labelDay")
+        //Log.d("estado", "daysEntrie: $entrieDays")
+
+        val statisticsDay = StatisticsModel.Description(
+            maxValue = entrieDays.maxOf { it.y.toInt() },
+            label = labelDay,
+            entrie = entrieDays
+        )
+
 
         // Get statistics about how many clients there are in each room
         val clientsEachRoom = clientsRegister.groupingBy { it.room }.eachCount()
+        var index = 0
         clientsEachRoom.forEach { (room, count) ->
-            statisticsRoom += StatiticsModel.Description(
-                description = "Habitacion $room",
-                value = count
-            )
-        }
-        // Get statistics about how many clients there are in each city
-        val clientsEachCity = clientsRegister.groupingBy { it.origin }.eachCount()
-        clientsEachCity.forEach { (city, count) ->
-            statisticsCity += StatiticsModel.Description(
-                description = city,
-                value = count
-            )
+            labelRoom += "$room"
+            entrieRoom += BarEntry(index.toFloat(), count.toFloat())
+            index++
         }
 
-        return StatiticsModel(
-            statisticsDays = statisticsDay,
-            statisticsRoom = statisticsRoom,
-            statisticsCity = statisticsCity
+        val statisticsRoom = StatisticsModel.Description(
+            maxValue = entrieRoom.maxOf { it.y.toInt() },
+            label = labelRoom,
+            entrie = entrieRoom
         )
+
+
+        // Get statistics about how many clients there are in each city
+        val clientsEachCity = clientsRegister.groupingBy { it.origin }.eachCount()
+        index = 0
+        clientsEachCity.forEach { (city, count) ->
+            labelCity += city
+            entrieCity += BarEntry(index.toFloat(), count.toFloat())
+            index++
+        }
+
+        val statisticsCity = StatisticsModel.Description(
+            maxValue = entrieCity.maxOf { it.y.toInt() },
+            label = labelCity,
+            entrie = entrieCity
+        )
+
+        return StatisticsModel(month = monthLast, statisticsData = listOf(statisticsDay, statisticsRoom, statisticsCity))
     }
 }

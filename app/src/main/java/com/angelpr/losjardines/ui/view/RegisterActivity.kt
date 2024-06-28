@@ -18,12 +18,12 @@ import com.angelpr.losjardines.R
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.databinding.ActivityRegisterBinding
 import com.angelpr.losjardines.ui.picker.GetPicker
-import com.angelpr.losjardines.ui.viewmodel.ClientsViewModel
+import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import java.util.Calendar
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
-    private val clientsViewModel: ClientsViewModel by viewModels()
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +96,7 @@ class RegisterActivity : AppCompatActivity() {
                 origin = origin,
                 observation = observation
             )
-            clientsViewModel.sendData(clientInfoModel)
+            firebaseViewModel.sendData(clientInfoModel)
             dialogView()
         } else {
             // Show Alert Dialog to fill all information except observation
@@ -130,7 +130,7 @@ class RegisterActivity : AppCompatActivity() {
         progressBar.isGone = false
         imageView.isGone = true
 
-        clientsViewModel.isSend.observe(this) { isSend ->
+        firebaseViewModel.isSend.observe(this) { isSend ->
             progressBar.isGone = true
             imageView.isGone = false
             dialog.setCancelable(true) //Enable cancel when click outside

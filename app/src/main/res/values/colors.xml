@@ -7,6 +7,8 @@
 
     <!-- Color app created -->
     <color name="background_default">#BF272D</color>
+    <color name="room_green">#1D7E1D</color>
+    <color name="room_red">#AC292D</color>
 
     <!-- Color without backgroundColor -->
     <color name="background_without_color">#00FFFFFF</color>

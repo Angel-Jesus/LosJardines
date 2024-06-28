@@ -2,7 +2,6 @@ package com.angelpr.losjardines.ui.view
 
 import android.app.Dialog
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -30,11 +29,11 @@ import com.angelpr.losjardines.data.model.UpdateDataModel
 import com.angelpr.losjardines.databinding.ActivityConsultationBinding
 import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentDU
 import com.angelpr.losjardines.ui.recycleView.ClientsAdapter
-import com.angelpr.losjardines.ui.viewmodel.ClientsViewModel
+import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 
 class ConsultationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConsultationBinding
-    private val clientsViewModel: ClientsViewModel by viewModels()
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     private var typeFilter: FilterType = FilterType.Default
     private var monthFilter: Months = Months.NONE
@@ -44,7 +43,6 @@ class ConsultationActivity : AppCompatActivity() {
         binding = ActivityConsultationBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         systemBar()
 
         spinnerFilterOption()
@@ -52,10 +50,10 @@ class ConsultationActivity : AppCompatActivity() {
 
         // Event to get Data Default of cloud firebase
         dialogViewLoadingGetData()
-        clientsViewModel.getData(ClientsRegisterModel())
+        firebaseViewModel.getData(ClientsRegisterModel())
 
         // Events of LiveData
-        clientsViewModel.clientRegisterData.observe(this) { clientRegister ->
+        firebaseViewModel.clientRegisterData.observe(this) { clientRegister ->
             if (clientRegister.loading) {
                 binding.recycleViewTable.isGone = true
 
@@ -66,14 +64,14 @@ class ConsultationActivity : AppCompatActivity() {
             }
         }
 
-        clientsViewModel.isDelete.observe(this) { isDelete ->
+        firebaseViewModel.isDelete.observe(this) { isDelete ->
             when {
                 isDelete!! == ActionProcess.LOADING -> {
                     dialogViewLoadingGetData()
                     Log.d("estado", "Delete loading")
                 }
                 isDelete == ActionProcess.SUCCESS -> {
-                    clientsViewModel.getData(ClientsRegisterModel())
+                    firebaseViewModel.getData(ClientsRegisterModel())
                     Log.d("estado", "Delete sucess")
                 }
                 isDelete == ActionProcess.ERROR -> {
@@ -83,14 +81,14 @@ class ConsultationActivity : AppCompatActivity() {
             }
         }
 
-        clientsViewModel.isUpdate.observe(this) { isUpdate ->
+        firebaseViewModel.isUpdate.observe(this) { isUpdate ->
             when{
                 isUpdate!! == ActionProcess.LOADING -> {
                     dialogViewLoadingGetData()
                     Log.d("estado", "Update loading")
                 }
                 isUpdate == ActionProcess.SUCCESS -> {
-                    clientsViewModel.getData(ClientsRegisterModel())
+                    firebaseViewModel.getData(ClientsRegisterModel())
                     Log.d("estado", "Update sucess")
                 }
                 isUpdate == ActionProcess.ERROR -> {
@@ -111,7 +109,7 @@ class ConsultationActivity : AppCompatActivity() {
             binding.spinnerFilter.setSelection(SpinnerItem.SpinnerPosition.None.ordinal)
             // Event to get Data Default of cloud firebase
             dialogViewLoadingGetData()
-            clientsViewModel.getData(ClientsRegisterModel())
+            firebaseViewModel.getData(ClientsRegisterModel())
         }
 
         // Event ToolBar action
@@ -129,7 +127,7 @@ class ConsultationActivity : AppCompatActivity() {
                 R.id.loading -> {
                     Log.d("estado", "click loading")
                     dialogViewLoadingGetData()
-                    clientsViewModel.getData(ClientsRegisterModel())
+                    firebaseViewModel.getData(ClientsRegisterModel())
                     true
                 }
                 else -> false
@@ -151,7 +149,7 @@ class ConsultationActivity : AppCompatActivity() {
             }
 
             else -> {
-                clientsViewModel.getData(
+                firebaseViewModel.getData(
                     ClientsRegisterModel(
                         filter = typeFilter,
                         descriptionFilter = description,
@@ -192,7 +190,7 @@ class ConsultationActivity : AppCompatActivity() {
         }
         dialog.show()
 
-        clientsViewModel.clientRegisterData.observe(this) { clientRegister ->
+        firebaseViewModel.clientRegisterData.observe(this) { clientRegister ->
             if (clientRegister.loading.not()) {
                 dialog.dismiss()
             }
@@ -221,7 +219,7 @@ class ConsultationActivity : AppCompatActivity() {
         // Select to update data and showing dialog
         DialogFragmentDU(
             activity = this,
-            clienteViewModel = clientsViewModel,
+            clienteViewModel = firebaseViewModel,
             dataUpdate = data
         ).show(supportFragmentManager, "DialogFragmentDU")
     }
