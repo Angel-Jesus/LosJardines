@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/loading"
-        android:icon="@drawable/ic_loading"
+        android:icon="@drawable/icon_loading"
         android:title="loading"
         app:showAsAction="always"
         tools:ignore="HardcodedText" />

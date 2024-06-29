@@ -17,7 +17,7 @@ import com.angelpr.losjardines.ui.picker.GetPicker
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import com.google.android.material.textfield.TextInputEditText
 
-class DialogFragmentDU(
+class DialogFragmentUpdate(
     private val activity: AppCompatActivity,
     private val clienteViewModel: FirebaseViewModel,
     private var dataUpdate: UpdateDataModel

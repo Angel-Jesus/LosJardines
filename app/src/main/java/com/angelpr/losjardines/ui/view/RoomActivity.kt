@@ -16,11 +16,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angelpr.losjardines.R
-import com.angelpr.losjardines.core.FirebaseAccess
 import com.angelpr.losjardines.data.model.ActionProcess
-import com.angelpr.losjardines.data.model.ClientsRegisterModel
 import com.angelpr.losjardines.data.model.RoomModel
 import com.angelpr.losjardines.databinding.ActivityRoomBinding
+import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentSetting
 import com.angelpr.losjardines.ui.recycleView.RoomsAdapter
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 
@@ -67,6 +66,19 @@ class RoomActivity : AppCompatActivity() {
                     dialogViewError()
                     Log.d("estado", "Update error")
                 }
+            }
+        }
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.setting -> {
+                    val roomList = firebaseViewModel.roomData.value
+                    if(roomList.isNullOrEmpty().not()){
+                        DialogFragmentSetting(firebaseViewModel, roomList!!).show(supportFragmentManager, "DialogFragmentSetting")
+                    }
+                    true
+                }
+                else -> false
             }
         }
 

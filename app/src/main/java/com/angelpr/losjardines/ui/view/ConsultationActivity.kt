@@ -27,7 +27,7 @@ import com.angelpr.losjardines.data.model.Months
 import com.angelpr.losjardines.data.model.SpinnerItem
 import com.angelpr.losjardines.data.model.UpdateDataModel
 import com.angelpr.losjardines.databinding.ActivityConsultationBinding
-import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentDU
+import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentUpdate
 import com.angelpr.losjardines.ui.recycleView.ClientsAdapter
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 
@@ -217,7 +217,7 @@ class ConsultationActivity : AppCompatActivity() {
 
     private fun onItemSelected(data: UpdateDataModel) {
         // Select to update data and showing dialog
-        DialogFragmentDU(
+        DialogFragmentUpdate(
             activity = this,
             clienteViewModel = firebaseViewModel,
             dataUpdate = data

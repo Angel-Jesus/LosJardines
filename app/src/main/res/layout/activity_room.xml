@@ -19,7 +19,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/icon_back"
         app:title="@string/txt_toolbar_return"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/white"
+        app:menu="@menu/custom_setting"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleView"

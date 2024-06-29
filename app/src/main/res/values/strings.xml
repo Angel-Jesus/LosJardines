@@ -12,7 +12,7 @@
     <string name="btn_txt_delete_register">Eliminar registro</string>
     <string name="btn_txt_update_data">Actualizar dato</string>
 
-    <!-- Text Title -->
+    <!-- Text Title, subtitle -->
     <string name="txt_habitaciones">N° habitacion *</string>
     <string name="txt_name">Apellidos y Nombres *</string>
     <string name="txt_dni">DNI *</string>
@@ -22,6 +22,9 @@
     <string name="txt_date">Fecha *</string>
     <string name="txt_hour">Hora *</string>
     <string name="txt_filter">Filtro</string>
+    <string name="txt_setting">Modificar precio de habitacion</string>
+    <string name="txt_error_setting_empty">Es necesario rellenar todos los datos</string>
+    <string name="txt_error_setting_room">Es necesario ingresar un numero de habitacion existente</string>
 
     <!-- Text hint EditText -->
     <string name="txt_changed">Corregir dato</string>
