@@ -13,6 +13,7 @@
         android:id="@+id/layoutBed"
         android:layout_width="390dp"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="10dp">
 
         <ImageView

@@ -42,7 +42,6 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         // Events of setOnClickListener
-
         binding.editDate.setOnClickListener {
             GetPicker.date(this)
         }
@@ -97,6 +96,13 @@ class RegisterActivity : AppCompatActivity() {
                 observation = observation
             )
             firebaseViewModel.sendData(clientInfoModel)
+
+            firebaseViewModel.updateData(
+                collection = "Rooms",
+                documentPath = room,
+                keyField = "state",
+                updateData = false
+            )
             dialogView()
         } else {
             // Show Alert Dialog to fill all information except observation
