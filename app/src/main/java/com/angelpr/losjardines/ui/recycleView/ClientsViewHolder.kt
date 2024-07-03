@@ -10,7 +10,7 @@ import com.angelpr.losjardines.databinding.ItemClientsBinding
 class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val binding = ItemClientsBinding.bind(view)
 
-    fun render(client: ClientInfoModel, onClickListener: (UpdateDataModel) -> Unit) {
+    fun render(client: ClientInfoModel,position: Int ,onClickListener: (UpdateDataModel, Int) -> Unit) {
         binding.editRoom.text = client.room.toString()
         binding.editHour.text = client.hour
         binding.editDate.text = client.date
@@ -27,7 +27,8 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                     documentPath = client.id,
                     keyField = HeadNameDB.NUMER_ROOM_DB,
                     data = client.room,
-                )
+                ),
+                position
             )
         }
         binding.editHour.setOnClickListener {
@@ -37,7 +38,8 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                     documentPath = client.id,
                     keyField = HeadNameDB.TIME_DB,
                     data = client.hour,
-                )
+                ),
+                position
             )
         }
         binding.editDate.setOnClickListener {
@@ -47,7 +49,8 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                     documentPath = client.id,
                     keyField = HeadNameDB.DATE_DB,
                     data = client.date,
-                )
+                ),
+                position
             )
         }
         binding.editName.setOnClickListener {
@@ -57,7 +60,8 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                     documentPath = client.id,
                     keyField = HeadNameDB.AYN_DB,
                     data = client.name,
-                )
+                ),
+                position
             )
         }
         binding.editDni.setOnClickListener {
@@ -67,7 +71,8 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                     documentPath = client.id,
                     keyField = HeadNameDB.DNI_DB,
                     data = client.dni,
-                )
+                ),
+                position
             )
         }
         binding.editOrigin.setOnClickListener {
@@ -77,7 +82,8 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                     documentPath = client.id,
                     keyField = HeadNameDB.ORIGIN_DB,
                     data = client.origin,
-                )
+                ),
+                position
             )
         }
         binding.editPrice.setOnClickListener {
@@ -87,7 +93,8 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                     documentPath = client.id,
                     keyField = HeadNameDB.PRICE_DB,
                     data = client.price,
-                )
+                ),
+                position
             )
         }
         binding.editObservation.setOnClickListener {
@@ -97,7 +104,8 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                     documentPath = client.id,
                     keyField = HeadNameDB.OBSERVATION_DB,
                     data = client.observation,
-                )
+                ),
+                position
             )
         }
 

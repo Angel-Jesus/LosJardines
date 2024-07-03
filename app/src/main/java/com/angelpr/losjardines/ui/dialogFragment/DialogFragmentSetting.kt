@@ -12,22 +12,30 @@ import com.angelpr.losjardines.data.model.RoomModel
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import com.google.android.material.textfield.TextInputEditText
 
-class DialogFragmentSetting(private val firebaseViewModel: FirebaseViewModel, private val roomList: List<RoomModel>): DialogFragment() {
+class DialogFragmentSetting(
+    private val firebaseViewModel: FirebaseViewModel,
+    private val roomList: List<RoomModel>
+) : DialogFragment() {
 
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val alertDialog = AlertDialog.Builder(requireContext())
         alertDialog.apply {
-            setView(requireActivity().layoutInflater.inflate(R.layout.dialog_fragment_setting, null))
+            setView(
+                requireActivity().layoutInflater.inflate(
+                    R.layout.dialog_fragment_setting,
+                    null
+                )
+            )
             setPositiveButton("Actualizar precio", null)
-            setNegativeButton("Cancelar"){btn,_ -> btn.cancel()}
+            setNegativeButton("Cancelar") { btn, _ -> btn.cancel() }
         }
         val alertDialogBuilder = alertDialog.create()
         alertDialogBuilder.show()
 
         val positiveButton = alertDialogBuilder.getButton(AlertDialog.BUTTON_POSITIVE)
 
-        positiveButton.setOnClickListener{
+        positiveButton.setOnClickListener {
             val roomEdit = dialog?.findViewById<TextInputEditText>(R.id.edit_room)
             val priceEdit = dialog?.findViewById<TextInputEditText>(R.id.edit_preciochange)
             val errorText = dialog?.findViewById<TextView>(R.id.txt_error)
@@ -38,7 +46,7 @@ class DialogFragmentSetting(private val firebaseViewModel: FirebaseViewModel, pr
                 errorText?.setText(R.string.txt_error_setting_empty)
             } else {
                 val isRoomExist = roomList.find { it.roomNumber == roomEdit?.text.toString() }
-                if(isRoomExist != null){
+                if (isRoomExist != null) {
                     // Update data
                     firebaseViewModel.updateData(
                         collection = "Rooms",
@@ -47,7 +55,7 @@ class DialogFragmentSetting(private val firebaseViewModel: FirebaseViewModel, pr
                         updateData = priceEdit!!.text.toString().toInt()
                     )
                     alertDialogBuilder.cancel()
-                }else{
+                } else {
                     errorText?.visibility = View.VISIBLE
                     errorText?.setText(R.string.txt_error_setting_room)
                 }

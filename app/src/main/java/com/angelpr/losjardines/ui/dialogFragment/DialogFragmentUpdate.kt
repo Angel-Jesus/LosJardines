@@ -10,18 +10,22 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.angelpr.losjardines.R
 import com.angelpr.losjardines.data.model.HeadNameDB
 import com.angelpr.losjardines.data.model.UpdateDataModel
 import com.angelpr.losjardines.ui.picker.GetPicker
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.launch
 
 class DialogFragmentUpdate(
     private val activity: AppCompatActivity,
     private val clienteViewModel: FirebaseViewModel,
-    private var dataUpdate: UpdateDataModel
+    private var dataUpdateModel: UpdateDataModel
 ) : DialogFragment() {
+
+    private val getPicker = GetPicker()
 
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreateView(
@@ -36,7 +40,7 @@ class DialogFragmentUpdate(
         val txtTitle = rootView.findViewById<TextView>(R.id.txtTitle)
         val editChanged = rootView.findViewById<TextInputEditText>(R.id.edit_changed)
 
-        when (dataUpdate.keyField) {
+        when (dataUpdateModel.keyField) {
             HeadNameDB.AYN_DB -> {
                 txtTitle.text = "¿Desea cambiar el nombre y apellido?"
             }
@@ -51,12 +55,15 @@ class DialogFragmentUpdate(
 
                 // Event to display a dialog picker of date
                 editChanged.setOnClickListener {
-                    GetPicker.date(activity)
+                    getPicker.date(activity)
                 }
 
-                GetPicker.dateValue.observe(activity) { date ->
-                    editChanged.setText(date)
+                lifecycleScope.launch {
+                    getPicker.pickerData.collect { uiDataPicker ->
+                        editChanged.setText(uiDataPicker.dateValue)
+                    }
                 }
+
             }
 
             HeadNameDB.TIME_DB -> {
@@ -64,12 +71,15 @@ class DialogFragmentUpdate(
                 editChanged.isFocusable = false
                 // Event to display a dialog picker of time
                 editChanged.setOnClickListener {
-                    GetPicker.hour(activity)
+                    getPicker.hour(activity)
                 }
 
-                GetPicker.hourValue.observe(activity) { hour ->
-                    editChanged.setText(hour)
+                lifecycleScope.launch {
+                    getPicker.pickerData.collect { uiDataPicker ->
+                        editChanged.setText(uiDataPicker.hourValue)
+                    }
                 }
+
             }
 
             HeadNameDB.OBSERVATION_DB -> {
@@ -96,19 +106,27 @@ class DialogFragmentUpdate(
         }
 
         btnUpdate.setOnClickListener {
-            dataUpdate.data = if (editChanged.text.toString().isNumer()) {
+            dataUpdateModel.data = if (editChanged.text.toString().isNumer()) {
                 editChanged.text.toString().toInt()
             } else {
                 editChanged.text.toString()
             }
             //Log.d("estado", "actualizar : $dataUpdate")
-            clienteViewModel.updateData(collection = dataUpdate.collection, documentPath = dataUpdate.documentPath, keyField = dataUpdate.keyField, updateData = dataUpdate.data)
+            clienteViewModel.updateData(
+                collection = dataUpdateModel.collection,
+                documentPath = dataUpdateModel.documentPath,
+                keyField = dataUpdateModel.keyField,
+                updateData = dataUpdateModel.data
+            )
             dismiss()
         }
 
         btnDelete.setOnClickListener {
             //Log.d("estado", "actualizar : $dataUpdate")
-            clienteViewModel.deleteData(collection = dataUpdate.collection, documentPath = dataUpdate.documentPath)
+            clienteViewModel.deleteData(
+                collection = dataUpdateModel.collection,
+                documentPath = dataUpdateModel.documentPath
+            )
             dismiss()
         }
 

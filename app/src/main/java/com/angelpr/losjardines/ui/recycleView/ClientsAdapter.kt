@@ -7,7 +7,7 @@ import com.angelpr.losjardines.R
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.data.model.UpdateDataModel
 
-class ClientsAdapter(private val clientsList: List<ClientInfoModel>, private val onclickListener: (UpdateDataModel) -> Unit): RecyclerView.Adapter<ClientsViewHolder>() {
+class ClientsAdapter(private val clientsList: List<ClientInfoModel>, private val onclickListener: (UpdateDataModel, Int) -> Unit): RecyclerView.Adapter<ClientsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClientsViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return ClientsViewHolder(layoutInflater.inflate(R.layout.item_clients, parent, false))
@@ -17,6 +17,6 @@ class ClientsAdapter(private val clientsList: List<ClientInfoModel>, private val
 
     override fun onBindViewHolder(holder: ClientsViewHolder, position: Int) {
         val item = clientsList[position]
-        holder.render(item, onclickListener)
+        holder.render(item, position ,onclickListener)
     }
 }

@@ -3,6 +3,7 @@ package com.angelpr.losjardines.core
 import android.util.Log
 import com.angelpr.losjardines.data.GetOfFilter
 import com.angelpr.losjardines.data.GetRoomList
+import com.angelpr.losjardines.data.model.ActionProcess
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
 import com.angelpr.losjardines.data.model.FilterType
@@ -13,13 +14,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.util.Calendar
 
-object FirebaseAccess {
+class FirebaseAccess {
 
     private val db: FirebaseFirestore
         get() = Firebase.firestore
 
 
-    fun sendRegister(data: ClientInfoModel, succesListener: (Boolean) -> Unit) {
+    fun sendRegister(data: ClientInfoModel, succesListener: (ActionProcess) -> Unit) {
         // Get date and time that is the documentPath of Cloud Firestore
         val year = Calendar.getInstance().get(Calendar.YEAR).toString()
         val month = convertIntToStr(Calendar.getInstance().get(Calendar.MONTH) + 1)
@@ -48,25 +49,29 @@ object FirebaseAccess {
             .set(client)
             .addOnSuccessListener {
                 Log.d("estado", "DocumentSnapshot successfully written!")
-                succesListener(true)
+                succesListener(ActionProcess.SUCCESS)
             }
             .addOnFailureListener { error ->
                 Log.w("estado", "Error adding document", error)
-                succesListener(false)
+                succesListener(ActionProcess.ERROR)
             }
 
     }
 
-    fun getRegister(clientsRegisterModel: ClientsRegisterModel, callback: (ClientsRegisterModel) -> Unit) {
+    fun getRegister(
+        clientsRegisterModel: ClientsRegisterModel,
+        callback: (ClientsRegisterModel, ActionProcess) -> Unit
+    ) {
 
         val yearNow = Calendar.getInstance().get(Calendar.YEAR)
         val monthNow = Calendar.getInstance().get(Calendar.MONTH)
 
-        val collection = if (clientsRegisterModel.timeFilter.ordinal > monthNow && clientsRegisterModel.filter != FilterType.Default) {
-            (yearNow - 1).toString()
-        } else {
-            yearNow.toString()
-        }
+        val collection =
+            if (clientsRegisterModel.timeFilter.ordinal > monthNow && clientsRegisterModel.filter != FilterType.Default) {
+                (yearNow - 1).toString()
+            } else {
+                yearNow.toString()
+            }
 
         db.collection(collection)
             .get()
@@ -77,7 +82,8 @@ object FirebaseAccess {
                             result = result,
                             clientsRegisterModel = clientsRegisterModel,
                             collection = collection
-                        ).default()
+                        ).default(),
+                        ActionProcess.SUCCESS
                     )
 
                     FilterType.Mont -> callback(
@@ -85,7 +91,8 @@ object FirebaseAccess {
                             result = result,
                             clientsRegisterModel = clientsRegisterModel,
                             collection = collection
-                        ).month()
+                        ).month(),
+                        ActionProcess.SUCCESS
                     )
 
                     FilterType.Dni -> callback(
@@ -93,7 +100,8 @@ object FirebaseAccess {
                             result = result,
                             clientsRegisterModel = clientsRegisterModel,
                             collection = collection
-                        ).dni()
+                        ).dni(),
+                        ActionProcess.SUCCESS
                     )
 
                     FilterType.Origin -> callback(
@@ -101,7 +109,8 @@ object FirebaseAccess {
                             result = result,
                             clientsRegisterModel = clientsRegisterModel,
                             collection = collection
-                        ).origin()
+                        ).origin(),
+                        ActionProcess.SUCCESS
                     )
 
                     FilterType.lastMonth -> callback(
@@ -109,55 +118,67 @@ object FirebaseAccess {
                             result = result,
                             clientsRegisterModel = clientsRegisterModel,
                             collection = collection
-                        ).lastMonth()
+                        ).lastMonth(),
+                        ActionProcess.SUCCESS
                     )
                 }
             }
             .addOnFailureListener { error ->
                 Log.w("estado", "Error getting documents.", error)
+                callback(ClientsRegisterModel(), ActionProcess.ERROR)
             }
     }
 
-    fun getRoom(callback: (List<RoomModel>) -> Unit){
+    fun getRoom(callback: (List<RoomModel>, ActionProcess) -> Unit) {
         db.collection("Rooms")
             .get()
             .addOnSuccessListener { result ->
-                callback(GetRoomList(result).getList())
+                callback(GetRoomList(result).getList(), ActionProcess.SUCCESS)
             }
             .addOnFailureListener { error ->
                 Log.w("estado", "Error getting documents.", error)
-                callback(emptyList())
+                callback(emptyList(), ActionProcess.ERROR)
             }
     }
 
-    fun deleteRegister(collection: String, documentPath: String, callback: (Boolean) -> Unit) {
+    fun deleteRegister(collection: String, documentPath: String, callback: (ActionProcess) -> Unit) {
         db.collection(collection)
             .document(documentPath)
             .delete()
             .addOnSuccessListener {
                 Log.d("estado", "DocumentSnapshot successfully delete!")
-                callback(true)
+                callback(ActionProcess.SUCCESS)
             }
             .addOnFailureListener { error ->
                 Log.w("estado", "Error adding document", error)
-                callback(false)
+                callback(ActionProcess.ERROR)
             }
     }
 
-    fun updateRegister(collection: String, documentPath: String, keyField: String, data: Any, callback: (Boolean) -> Unit) {
+    fun updateRegister(
+        collection: String,
+        documentPath: String,
+        keyField: String,
+        data: Any,
+        callback: (ActionProcess) -> Unit
+    ) {
         db.collection(collection)
             .document(documentPath)
             .update(keyField, data)
             .addOnSuccessListener {
                 Log.d("estado", "DocumentSnapshot successfully update!")
-                callback(true)
+                callback(ActionProcess.SUCCESS)
             }
             .addOnFailureListener { error ->
                 Log.w("estado", "Error adding document", error)
-                callback(false)
+                callback(ActionProcess.ERROR)
             }
     }
 
-    private fun convertIntToStr(value: Int): String = if(value < 10 ) { "0$value" } else { "$value" }
+    private fun convertIntToStr(value: Int): String = if (value < 10) {
+        "0$value"
+    } else {
+        "$value"
+    }
 
 }

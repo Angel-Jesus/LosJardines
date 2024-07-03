@@ -7,7 +7,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isGone
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.angelpr.losjardines.data.model.ActionProcess
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
 import com.angelpr.losjardines.data.model.FilterType
 import com.angelpr.losjardines.data.model.Months
@@ -15,6 +20,7 @@ import com.angelpr.losjardines.data.model.StatisticsModel
 import com.angelpr.losjardines.databinding.ActivityStatisticsBinding
 import com.angelpr.losjardines.ui.recycleView.StatisticsAdapter
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
+import kotlinx.coroutines.launch
 
 class StatisticsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStatisticsBinding
@@ -33,11 +39,29 @@ class StatisticsActivity : AppCompatActivity() {
 
         firebaseViewModel.getData(ClientsRegisterModel(filter = FilterType.lastMonth, timeFilter = genMonthStr(monthNow)))
 
-        // Events to LiveData
-        firebaseViewModel.statisticsClientData.observe(this) { statiticsModel ->
-            if(statiticsModel.statisticsData.isNotEmpty())
-            {
-                createRecycleView(statiticsModel)
+        // Events to StateFlow
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
+                firebaseViewModel.stateStatisticsData.collect { uiStateStatistics ->
+                    when(uiStateStatistics.responseStatistic){
+                        ActionProcess.LOADING -> {
+                            binding.progressStatistic.isGone = false
+                            binding.recycleView.isGone = true
+
+                        }
+                        ActionProcess.SUCCESS -> {
+                            binding.progressStatistic.isGone = true
+                            binding.recycleView.isGone = false
+                            createRecycleView(uiStateStatistics.statisticsModel)
+                        }
+                        ActionProcess.ERROR -> {
+                            binding.progressStatistic.isGone = true
+                            binding.recycleView.isGone = true
+
+                        }
+                    }
+                }
             }
         }
 

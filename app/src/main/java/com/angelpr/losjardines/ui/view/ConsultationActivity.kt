@@ -1,16 +1,12 @@
 package com.angelpr.losjardines.ui.view
 
-import android.app.Dialog
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -18,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angelpr.losjardines.R
 import com.angelpr.losjardines.data.model.ActionProcess
@@ -27,9 +24,11 @@ import com.angelpr.losjardines.data.model.Months
 import com.angelpr.losjardines.data.model.SpinnerItem
 import com.angelpr.losjardines.data.model.UpdateDataModel
 import com.angelpr.losjardines.databinding.ActivityConsultationBinding
+import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentResponse
 import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentUpdate
 import com.angelpr.losjardines.ui.recycleView.ClientsAdapter
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
+import kotlinx.coroutines.launch
 
 class ConsultationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConsultationBinding
@@ -38,6 +37,7 @@ class ConsultationActivity : AppCompatActivity() {
     private var typeFilter: FilterType = FilterType.Default
     private var monthFilter: Months = Months.NONE
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityConsultationBinding.inflate(layoutInflater)
@@ -49,55 +49,45 @@ class ConsultationActivity : AppCompatActivity() {
         spinnerFilterMonth()
 
         // Event to get Data Default of cloud firebase
-        dialogViewLoadingGetData()
         firebaseViewModel.getData(ClientsRegisterModel())
+        DialogFragmentResponse(
+            context = this,
+            actionRegister = FirebaseViewModel.ActionRegister.GET,
+            firebaseViewModel = firebaseViewModel
+        ).show(supportFragmentManager, "DialogFragmentResponse")
 
-        // Events of LiveData
-        firebaseViewModel.clientRegisterData.observe(this) { clientRegister ->
-            if (clientRegister.loading) {
-                binding.recycleViewTable.isGone = true
+        // Events of StateFlow
+        lifecycleScope.launch {
+            firebaseViewModel.stateRegisterData.collect { uiStateRegister ->
+                when (uiStateRegister.response) {
+                    ActionProcess.LOADING -> {
+                        Log.d("estado", "loading")
+                        binding.recycleViewTable.isGone = true
+                    }
+                    ActionProcess.SUCCESS -> {
+                        Log.d("estado", "success")
+                        binding.recycleViewTable.isGone = false
+                        recycleViewCreate(uiStateRegister.clientRegisterModel)
+                    }
 
-            } else {
-                //Log.d("estado", "data: ${clientRegister.clientsList}")
-                binding.recycleViewTable.isGone = false
-                recycleViewCreate(clientRegister)
-            }
-        }
-
-        firebaseViewModel.isDelete.observe(this) { isDelete ->
-            when {
-                isDelete!! == ActionProcess.LOADING -> {
-                    dialogViewLoadingGetData()
-                    Log.d("estado", "Delete loading")
+                    ActionProcess.ERROR -> {
+                        Log.d("estado", "error")
+                        binding.recycleViewTable.isGone = true
+                    }
                 }
-                isDelete == ActionProcess.SUCCESS -> {
+
+                if(uiStateRegister.changeValue){
+                    Log.d("estado", "changeValue")
                     firebaseViewModel.getData(ClientsRegisterModel())
-                    Log.d("estado", "Delete sucess")
-                }
-                isDelete == ActionProcess.ERROR -> {
-                    dialogViewError()
-                    Log.d("estado", "Delete error")
-                }
-            }
-        }
-
-        firebaseViewModel.isUpdate.observe(this) { isUpdate ->
-            when{
-                isUpdate!! == ActionProcess.LOADING -> {
-                    dialogViewLoadingGetData()
-                    Log.d("estado", "Update loading")
-                }
-                isUpdate == ActionProcess.SUCCESS -> {
-                    firebaseViewModel.getData(ClientsRegisterModel())
-                    Log.d("estado", "Update sucess")
-                }
-                isUpdate == ActionProcess.ERROR -> {
-                    dialogViewError()
-                    Log.d("estado", "Update error")
+                    DialogFragmentResponse(
+                        context = this@ConsultationActivity,
+                        actionRegister = FirebaseViewModel.ActionRegister.GET,
+                        firebaseViewModel = firebaseViewModel
+                    ).show(supportFragmentManager, "DialogFragmentResponse")
                 }
             }
-        }
 
+        }
 
         // Events of setOnClickListener
         binding.btnSearch.setOnClickListener {
@@ -108,8 +98,12 @@ class ConsultationActivity : AppCompatActivity() {
             // Clear data
             binding.spinnerFilter.setSelection(SpinnerItem.SpinnerPosition.None.ordinal)
             // Event to get Data Default of cloud firebase
-            dialogViewLoadingGetData()
             firebaseViewModel.getData(ClientsRegisterModel())
+            DialogFragmentResponse(
+                context = this,
+                actionRegister = FirebaseViewModel.ActionRegister.GET,
+                firebaseViewModel = firebaseViewModel
+            ).show(supportFragmentManager, "DialogFragmentResponse")
         }
 
         // Event ToolBar action
@@ -117,19 +111,25 @@ class ConsultationActivity : AppCompatActivity() {
             finish() // Return the previous screen and close the activity
         }
 
-        binding.toolbar.setOnMenuItemClickListener {menuItem ->
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.dataStatic -> {
                     Log.d("estado", "click dataStatic")
                     startActivity(Intent(this, StatisticsActivity::class.java))
                     true
                 }
+
                 R.id.loading -> {
                     Log.d("estado", "click loading")
-                    dialogViewLoadingGetData()
                     firebaseViewModel.getData(ClientsRegisterModel())
+                    DialogFragmentResponse(
+                        context = this,
+                        actionRegister = FirebaseViewModel.ActionRegister.GET,
+                        firebaseViewModel = firebaseViewModel
+                    ).show(supportFragmentManager, "DialogFragmentResponse")
                     true
                 }
+
                 else -> false
             }
         }
@@ -156,43 +156,11 @@ class ConsultationActivity : AppCompatActivity() {
                         timeFilter = monthFilter
                     )
                 )
-                dialogViewLoadingGetData()
-            }
-        }
-    }
-
-    private fun dialogViewError() {
-        val dialog = Dialog(this).apply {
-            requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_box_status)
-            setCancelable(true)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-        }
-        val textInfo = dialog.findViewById<TextView>(R.id.textInfo)
-        val progressBar = dialog.findViewById<ProgressBar>(R.id.progressBar)
-        val imageView = dialog.findViewById<ImageView>(R.id.stateIcon)
-
-        progressBar.isGone = true
-        imageView.isGone = false
-
-        textInfo.text = getString(R.string.txt_state_error)
-        imageView.setImageResource(R.drawable.error)
-
-        dialog.show()
-    }
-
-    private fun dialogViewLoadingGetData() {
-        // Show Dialog Loading
-        val dialog = Dialog(this).apply {
-            setContentView(R.layout.dialog_box_loading)
-            setCancelable(false)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-        }
-        dialog.show()
-
-        firebaseViewModel.clientRegisterData.observe(this) { clientRegister ->
-            if (clientRegister.loading.not()) {
-                dialog.dismiss()
+                DialogFragmentResponse(
+                    context = this,
+                    actionRegister = FirebaseViewModel.ActionRegister.GET,
+                    firebaseViewModel = firebaseViewModel
+                ).show(supportFragmentManager, "DialogFragmentResponse")
             }
         }
     }
@@ -210,7 +178,7 @@ class ConsultationActivity : AppCompatActivity() {
     private fun recycleViewCreate(clients: ClientsRegisterModel) {
         binding.recycleViewTable.setHasFixedSize(true)
         binding.recycleViewTable.layoutManager = LinearLayoutManager(this)
-        binding.recycleViewTable.adapter = ClientsAdapter(clients.clientsList) { data ->
+        binding.recycleViewTable.adapter = ClientsAdapter(clients.clientsList) { data, _ ->
             onItemSelected(data)
         }
     }
@@ -220,7 +188,7 @@ class ConsultationActivity : AppCompatActivity() {
         DialogFragmentUpdate(
             activity = this,
             clienteViewModel = firebaseViewModel,
-            dataUpdate = data
+            dataUpdateModel = data
         ).show(supportFragmentManager, "DialogFragmentDU")
     }
 

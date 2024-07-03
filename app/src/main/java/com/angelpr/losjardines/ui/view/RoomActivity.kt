@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angelpr.losjardines.R
 import com.angelpr.losjardines.data.model.ActionProcess
@@ -22,6 +25,7 @@ import com.angelpr.losjardines.databinding.ActivityRoomBinding
 import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentSetting
 import com.angelpr.losjardines.ui.recycleView.RoomsAdapter
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
+import kotlinx.coroutines.launch
 
 class RoomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomBinding
@@ -38,46 +42,48 @@ class RoomActivity : AppCompatActivity() {
         binding.progress.isGone = false
         binding.recycleView.isGone = true
 
-        // Events of liveData
-        firebaseViewModel.roomData.observe(this){roomList ->
-            binding.progress.isGone = true
-            if(roomList.isNotEmpty()){
-                binding.recycleView.isGone = false
-                createRecyclerView(roomList)
-            }else{
-                // Error
-                binding.recycleView.isGone = true
-                dialogViewError()
-            }
-        }
+        // Events of StateFlow
+        lifecycleScope.launch {
+            firebaseViewModel.stateRoomData.collect { uiStateRoom ->
+                when (uiStateRoom.responseRoom) {
+                    ActionProcess.LOADING -> {
+                        binding.progress.isGone = false
+                        binding.recycleView.isGone = true
+                    }
 
-        firebaseViewModel.isUpdate.observe(this){isUpdate ->
-            when{
-                isUpdate!! == ActionProcess.LOADING -> {
-                    binding.progress.isGone = false
-                    Log.d("estado", "Update loading")
+                    ActionProcess.SUCCESS -> {
+                        binding.progress.isGone = true
+                        binding.recycleView.isGone = false
+                        createRecyclerView(uiStateRoom.roomDataList)
+                    }
+
+                    ActionProcess.ERROR -> {
+                        binding.recycleView.isGone = true
+                        dialogViewError()
+
+                    }
                 }
-                isUpdate == ActionProcess.SUCCESS -> {
-                    binding.progress.isGone = true
+
+                if(uiStateRoom.changeValue){
                     firebaseViewModel.getRoomInfo()
-                    Log.d("estado", "Update sucess")
-                }
-                isUpdate == ActionProcess.ERROR -> {
-                    dialogViewError()
-                    Log.d("estado", "Update error")
                 }
             }
+
         }
 
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId){
+            when (menuItem.itemId) {
                 R.id.setting -> {
-                    val roomList = firebaseViewModel.roomData.value
-                    if(roomList.isNullOrEmpty().not()){
-                        DialogFragmentSetting(firebaseViewModel, roomList!!).show(supportFragmentManager, "DialogFragmentSetting")
+                    val roomList = firebaseViewModel.stateRoomData.value.roomDataList
+                    if (roomList.isNotEmpty()) {
+                        DialogFragmentSetting(firebaseViewModel, roomList).show(
+                            supportFragmentManager,
+                            "DialogFragmentSetting"
+                        )
                     }
                     true
                 }
+
                 else -> false
             }
         }
@@ -93,17 +99,17 @@ class RoomActivity : AppCompatActivity() {
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.recycleView.layoutManager = linearLayoutManager
-        binding.recycleView.adapter = RoomsAdapter(this, roomList){room ->
+        binding.recycleView.adapter = RoomsAdapter(this, roomList) { room ->
             messageAlert(room)
         }
     }
 
-    private fun messageAlert(room: RoomModel){
+    private fun messageAlert(room: RoomModel) {
         val alert = AlertDialog.Builder(this)
         alert.setTitle("Mensaje: Actualización ")
         alert.setMessage("Esta por actualizar la disponibilidad de la habitación. ¿Desea continuar?")
         alert.setCancelable(true)
-        alert.setPositiveButton("Actualizar"){btn, _ ->
+        alert.setPositiveButton("Actualizar") { btn, _ ->
             firebaseViewModel.updateData(
                 collection = "Rooms",
                 documentPath = room.roomNumber,
@@ -112,7 +118,7 @@ class RoomActivity : AppCompatActivity() {
             )
             btn.cancel()
         }
-        alert.setNegativeButton("NO"){btn, _ ->
+        alert.setNegativeButton("NO") { btn, _ ->
             btn.cancel()
         }
         alert.show()

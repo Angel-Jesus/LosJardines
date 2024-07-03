@@ -14,16 +14,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.angelpr.losjardines.R
+import com.angelpr.losjardines.data.model.ActionProcess
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.databinding.ActivityRegisterBinding
+import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentResponse
 import com.angelpr.losjardines.ui.picker.GetPicker
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
+import com.google.android.gms.common.api.internal.LifecycleActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private val firebaseViewModel: FirebaseViewModel by viewModels()
+    private val getPicker = GetPicker()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,22 +41,28 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
         systemBar()
 
-        // Events of liveData
-        GetPicker.dateValue.observe(this) { date ->
-            binding.editDate.setText(date)
-        }
+        // Events of stateFlow
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getPicker.pickerData.collect { uiDataPicker ->
+                    if (uiDataPicker.dateValue.isNotEmpty()) {
+                        binding.editDate.setText(uiDataPicker.dateValue)
+                    }
 
-        GetPicker.hourValue.observe(this) { hour ->
-            binding.editHour.setText(hour)
+                    if (uiDataPicker.hourValue.isNotEmpty()) {
+                        binding.editHour.setText(uiDataPicker.hourValue)
+                    }
+                }
+            }
         }
 
         // Events of setOnClickListener
         binding.editDate.setOnClickListener {
-            GetPicker.date(this)
+            getPicker.date(this)
         }
 
         binding.editHour.setOnClickListener {
-            GetPicker.hour(this)
+            getPicker.hour(this)
         }
 
         binding.btnSave.setOnClickListener {
@@ -103,56 +118,26 @@ class RegisterActivity : AppCompatActivity() {
                 keyField = "state",
                 updateData = false
             )
-            dialogView()
+            DialogFragmentResponse(
+                context = this,
+                actionRegister = FirebaseViewModel.ActionRegister.SEND,
+                firebaseViewModel = firebaseViewModel
+            ).show(supportFragmentManager, "DialogFragmentResponse")
         } else {
             // Show Alert Dialog to fill all information except observation
-            val txt =
-                "Por favor, complete todos los campos obligatorios que se encuentran marcado con *"
-            messageAlert(txt)
+            messageAlert()
         }
     }
 
-    private fun messageAlert(message: String) {
+    private fun messageAlert() {
         AlertDialog.Builder(this).apply {
             setTitle("Mensaje de Alerta")
-            setMessage(message)
+            setMessage("Por favor, complete todos los campos obligatorios que se encuentran marcado con *")
             setCancelable(true)
             setPositiveButton("OK") { btn, _ -> btn.cancel() }
             show()
         }
     }
-
-    private fun dialogView() {
-        val dialog = Dialog(this).apply {
-            requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_box_status)
-            setCancelable(false)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-        }
-        val textInfo = dialog.findViewById<TextView>(R.id.textInfo)
-        val progressBar = dialog.findViewById<ProgressBar>(R.id.progressBar)
-        val imageView = dialog.findViewById<ImageView>(R.id.stateIcon)
-
-        progressBar.isGone = false
-        imageView.isGone = true
-
-        firebaseViewModel.isSend.observe(this) { isSend ->
-            progressBar.isGone = true
-            imageView.isGone = false
-            dialog.setCancelable(true) //Enable cancel when click outside
-
-            if (isSend) {
-                textInfo.text = getString(R.string.txt_state_succesfull)
-                imageView.setImageResource(R.drawable.successful)
-            } else {
-               textInfo.text = getString(R.string.txt_state_error)
-               imageView.setImageResource(R.drawable.error)
-            }
-
-        }
-        dialog.show()
-    }
-
 
     private fun systemBar() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(binding.main.id)) { v, insets ->

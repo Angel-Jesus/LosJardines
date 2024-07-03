@@ -40,7 +40,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                 break
             }
         }
-        return ClientsRegisterModel(clientsList = clientInfoModelList, loading = false)
+        return ClientsRegisterModel(clientsList = clientInfoModelList)
     }
 
     fun origin(): ClientsRegisterModel {
@@ -84,7 +84,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                 }
             }
         }
-        return ClientsRegisterModel(clientsList = clientInfoModelList, loading = false)
+        return ClientsRegisterModel(clientsList = clientInfoModelList)
     }
 
     fun month(): ClientsRegisterModel {
@@ -122,7 +122,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                 }
             }
         }
-        return ClientsRegisterModel(clientsList = clientInfoModelList, loading = false)
+        return ClientsRegisterModel(clientsList = clientInfoModelList)
     }
 
     fun dni(): ClientsRegisterModel {
@@ -166,7 +166,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
             }
         }
 
-        return ClientsRegisterModel(clientsList = clientInfoModelList, loading = false)
+        return ClientsRegisterModel(clientsList = clientInfoModelList)
     }
 
     fun lastMonth(): ClientsRegisterModel {
@@ -203,7 +203,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                 }
             }
         }
-        return ClientsRegisterModel(clientsList = clientInfoModelList, loading = false)
+        return ClientsRegisterModel(clientsList = clientInfoModelList)
     }
 
 }

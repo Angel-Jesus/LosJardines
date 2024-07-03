@@ -1,7 +1,6 @@
 package com.angelpr.losjardines.ui.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelpr.losjardines.data.model.ActionProcess
@@ -17,6 +16,9 @@ import com.angelpr.losjardines.domain.GetRoomToFirebase
 import com.angelpr.losjardines.domain.GetStatistics
 import com.angelpr.losjardines.domain.SendDataToFirebase
 import com.angelpr.losjardines.domain.UpdateDataToFirebase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FirebaseViewModel : ViewModel() {
@@ -28,19 +30,21 @@ class FirebaseViewModel : ViewModel() {
     private val deleteDataToFirebase = DeleteDataToFirebase()
     private val updateDataToFirebase = UpdateDataToFirebase()
 
-    val isSend = MutableLiveData<Boolean>()
-    val isDelete = MutableLiveData<ActionProcess>()
-    val isUpdate = MutableLiveData<ActionProcess>()
-    val isStatistics = MutableLiveData<Boolean>()
+    private val _stateRegisterData = MutableStateFlow(UiStateRegister())
+    val stateRegisterData = _stateRegisterData.asStateFlow()
 
-    val clientRegisterData = MutableLiveData<ClientsRegisterModel>()
-    val statisticsClientData = MutableLiveData<StatisticsModel>()
-    val roomData = MutableLiveData<List<RoomModel>>()
+    private val _stateStatisticsData = MutableStateFlow(UiStateStatistics())
+    val stateStatisticsData = _stateStatisticsData.asStateFlow()
+
+    private val _stateRoomData = MutableStateFlow(UiStateRoom())
+    val stateRoomData = _stateRoomData.asStateFlow()
 
     fun sendData(clienInfo: ClientInfoModel) {
         viewModelScope.launch {
-            sendDataToFirebase(clienInfo) {
-                isSend.postValue(it)
+            _stateRegisterData.update { it.copy(response = ActionProcess.LOADING) }
+            // Send data to Firebase
+            sendDataToFirebase(clienInfo) { response ->
+                _stateRegisterData.update { it.copy(response = response) }
             }
         }
     }
@@ -48,63 +52,115 @@ class FirebaseViewModel : ViewModel() {
     fun getData(clientsRegisterModel: ClientsRegisterModel) {
         viewModelScope.launch {
             // State of start loading
-            //clientRegisterData.postValue(ClientsRegister(loading = true))
-            isStatistics.postValue(false)
-            getDataToFirebase(clientsRegister = clientsRegisterModel) { callback ->
-                if (clientsRegisterModel.filter != FilterType.lastMonth) {
-                    clientRegisterData.postValue(callback)
-                } else {
+            _stateStatisticsData.update { it.copy(responseStatistic = ActionProcess.LOADING) }
+            _stateRegisterData.update {
+                it.copy(
+                    response = ActionProcess.LOADING,
+                    changeValue = false
+                )
+            }
 
-                    statisticsClientData.postValue(
-                        getStatistics(
-                            month = getMonthStr(clientsRegisterModel.timeFilter),
-                            clientsRegister = callback.clientsList
+            getDataToFirebase(clientsRegister = clientsRegisterModel) { callback, response ->
+                if (clientsRegisterModel.filter != FilterType.lastMonth) {
+                    _stateRegisterData.update {
+                        it.copy(
+                            clientRegisterModel = callback,
+                            response = response
                         )
-                    )
-                    isStatistics.postValue(true)
+                    }
+                } else {
+                    _stateStatisticsData.update {
+                        it.copy(
+                            responseStatistic = response,
+                            statisticsModel = getStatistics(
+                                month = getMonthStr(clientsRegisterModel.timeFilter),
+                                clientsRegister = callback.clientsList
+                            )
+                        )
+                    }
                 }
 
             }
         }
     }
 
-    fun getRoomInfo(){
+    fun getRoomInfo() {
         viewModelScope.launch {
-            getRoomToFirebase{roomList ->
-                roomData.postValue(roomList)
+            _stateRoomData.update {
+                it.copy(
+                    responseRoom = ActionProcess.LOADING,
+                    changeValue = false
+                )
+            }
+            getRoomToFirebase { roomList, response ->
+                _stateRoomData.update {
+                    it.copy(
+                        responseRoom = response,
+                        roomDataList = roomList,
+                        changeValue = false
+                    )
+                }
             }
         }
     }
 
     fun deleteData(collection: String, documentPath: String) {
         viewModelScope.launch {
-            isDelete.postValue(ActionProcess.LOADING)
-            deleteDataToFirebase(collection = collection, documentPath = documentPath) { success ->
-                val response = if (success) {
-                    ActionProcess.SUCCESS
+            _stateRegisterData.update {
+                it.copy(
+                    response = ActionProcess.LOADING,
+                    changeValue = false
+                )
+            }
+            deleteDataToFirebase(collection = collection, documentPath = documentPath) { response ->
+                if (response == ActionProcess.SUCCESS) {
+                    _stateRegisterData.update { it.copy(response = response, changeValue = true) }
                 } else {
-                    ActionProcess.ERROR
+                    _stateRegisterData.update { it.copy(response = response, changeValue = false) }
                 }
-                isDelete.postValue(response)
             }
         }
     }
 
     fun updateData(collection: String, documentPath: String, keyField: String, updateData: Any) {
         viewModelScope.launch {
-            isUpdate.postValue(ActionProcess.LOADING)
+            _stateRegisterData.update {
+                it.copy(
+                    response = ActionProcess.LOADING,
+                    changeValue = false
+                )
+            }
+            _stateRoomData.update {
+                it.copy(
+                    responseRoom = ActionProcess.LOADING,
+                    changeValue = false
+                )
+            }
+
             updateDataToFirebase(
                 collection = collection,
                 documentPath = documentPath,
                 keyField = keyField,
                 data = updateData
-            ) { success ->
-                val response = if (success) {
-                    ActionProcess.SUCCESS
+            ) { response ->
+                if (response == ActionProcess.SUCCESS) {
+                    _stateRegisterData.update { it.copy(response = response, changeValue = true) }
+                    _stateRoomData.update {
+                        it.copy(
+                            responseRoom = ActionProcess.LOADING,
+                            changeValue = true
+                        )
+                    }
                 } else {
-                    ActionProcess.ERROR
+                    _stateRegisterData.update { it.copy(response = response, changeValue = false) }
+                    _stateRoomData.update {
+                        it.copy(
+                            responseRoom = ActionProcess.LOADING,
+                            changeValue = false
+                        )
+                    }
                 }
-                isUpdate.postValue(response)
+
             }
         }
     }
@@ -124,6 +180,30 @@ class FirebaseViewModel : ViewModel() {
             Months.NOVEMBER -> "Noviembre"
             else -> "Diciembre"
         }
+    }
+
+    data class UiStateRegister(
+        val response: ActionProcess = ActionProcess.LOADING,
+        val changeValue: Boolean = false,
+        val clientRegisterModel: ClientsRegisterModel = ClientsRegisterModel()
+    )
+
+    data class UiStateStatistics(
+        val responseStatistic: ActionProcess = ActionProcess.LOADING,
+        val statisticsModel: StatisticsModel = StatisticsModel()
+    )
+
+    data class UiStateRoom(
+        val responseRoom: ActionProcess = ActionProcess.LOADING,
+        val changeValue: Boolean = false,
+        val roomDataList: List<RoomModel> = emptyList()
+    )
+
+    enum class ActionRegister {
+        SEND,
+        GET,
+        UPDATE,
+        DELETE
     }
 
     override fun onCleared() {

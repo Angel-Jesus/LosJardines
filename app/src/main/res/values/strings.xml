@@ -30,10 +30,12 @@
     <string name="txt_changed">Corregir dato</string>
 
     <!-- Text Dialog Box-->
-    <string name="txt_state_succesfull">Enviado correctamente</string>
+    <string name="txt_state_succesfull">Tarea exitosa</string>
     <string name="txt_state_error">Ocurrio un problema</string>
     <string name="txt_state_sending">Enviando..</string>
-    <string name="txt_state_loading">Obteniendo datos</string>
+    <string name="txt_state_update">Actualizando..</string>
+    <string name="txt_state_delete">Eliminando..</string>
+    <string name="txt_state_loading">Obteniendo datos..</string>
 
     <!-- Text toolBar -->
     <string name="txt_toolbar_return">Regresar</string>
