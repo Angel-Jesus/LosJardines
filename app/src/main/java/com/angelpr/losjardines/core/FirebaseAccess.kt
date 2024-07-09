@@ -3,11 +3,11 @@ package com.angelpr.losjardines.core
 import android.util.Log
 import com.angelpr.losjardines.data.GetOfFilter
 import com.angelpr.losjardines.data.GetRoomList
-import com.angelpr.losjardines.data.model.ActionProcess
+import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
-import com.angelpr.losjardines.data.model.FilterType
-import com.angelpr.losjardines.data.model.HeadNameDB
+import com.angelpr.losjardines.data.model.types.FilterType
+import com.angelpr.losjardines.data.model.types.HeadNameDB
 import com.angelpr.losjardines.data.model.RoomModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore

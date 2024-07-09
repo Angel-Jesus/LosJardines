@@ -4,7 +4,8 @@
     <!-- Text Buttom -->
     <string name="btn_txt_activity_register">REGISTRAR</string>
     <string name="btn_txt_activity_consultation">CONSULTAR</string>
-    <string name="btn_txt_activity_room">HABITACIONES DISPONIBLES</string>
+    <string name="btn_txt_activity_products">PRODUCTOS</string>
+    <string name="btn_txt_activity_reservation">RESERVAR</string>
     <string name="btn_txt_save">GUARDAR</string>
     <string name="btn_txt_consultation">CONSULTA</string>
     <string name="btn_txt_search">Buscar</string>

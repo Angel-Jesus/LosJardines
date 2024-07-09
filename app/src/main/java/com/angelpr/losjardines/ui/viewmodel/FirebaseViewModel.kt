@@ -3,11 +3,11 @@ package com.angelpr.losjardines.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.angelpr.losjardines.data.model.ActionProcess
+import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
-import com.angelpr.losjardines.data.model.FilterType
-import com.angelpr.losjardines.data.model.Months
+import com.angelpr.losjardines.data.model.types.FilterType
+import com.angelpr.losjardines.data.model.types.Months
 import com.angelpr.losjardines.data.model.RoomModel
 import com.angelpr.losjardines.data.model.StatisticsModel
 import com.angelpr.losjardines.domain.DeleteDataToFirebase

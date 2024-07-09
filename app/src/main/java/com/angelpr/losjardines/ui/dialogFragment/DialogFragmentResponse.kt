@@ -11,7 +11,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.angelpr.losjardines.R
-import com.angelpr.losjardines.data.model.ActionProcess
+import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import kotlinx.coroutines.launch
 

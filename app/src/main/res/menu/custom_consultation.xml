@@ -2,10 +2,25 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/reservation"
+        android:icon="@drawable/icon_reservation"
+        android:title="Rooms"
+        app:showAsAction="always"
+        tools:ignore="HardcodedText" />
+
+    <item
+        android:id="@+id/rooms"
+        android:icon="@drawable/icon_rooms"
+        android:title="Rooms"
+        app:showAsAction="always"
+        tools:ignore="HardcodedText" />
+
     <item
         android:id="@+id/dataStatic"
         android:title="DataMes"
-        android:icon="@drawable/ic_historial"
+        android:icon="@drawable/icon_statistics"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction,HardcodedText" />
 

@@ -43,13 +43,26 @@
             android:layout_width="200dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:text="@string/btn_txt_activity_register"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
             app:cornerRadius="8sp"/>
+
+        <Button
+            android:id="@+id/btn_reservation"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/btn_txt_activity_reservation"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="8sp" />
 
         <Button
             android:id="@+id/btn_consultation"
@@ -64,12 +77,12 @@
             app:cornerRadius="8sp"/>/>
 
         <Button
-            android:id="@+id/btn_room"
+            android:id="@+id/btn_products"
             android:layout_width="200dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
-            android:text="@string/btn_txt_activity_room"
+            android:text="@string/btn_txt_activity_products"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"

@@ -29,15 +29,19 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ConsultationActivity::class.java))
         }
 
-        binding.btnRoom.setOnClickListener{
-            startActivity(Intent(this, RoomActivity::class.java))
+        binding.btnReservation.setOnClickListener {
+            startActivity(Intent(this, ReservationActivity::class.java))
+        }
+
+        binding.btnProducts.setOnClickListener{
+            startActivity(Intent(this, ProductsActivity::class.java))
         }
 
     }
 
 
     private fun systemBar() {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(binding.main.id)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

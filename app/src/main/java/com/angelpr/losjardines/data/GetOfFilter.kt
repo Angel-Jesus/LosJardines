@@ -3,8 +3,8 @@ package com.angelpr.losjardines.data
 import android.icu.util.Calendar
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
-import com.angelpr.losjardines.data.model.HeadNameDB
-import com.angelpr.losjardines.data.model.Months
+import com.angelpr.losjardines.data.model.types.HeadNameDB
+import com.angelpr.losjardines.data.model.types.Months
 import com.google.firebase.firestore.QuerySnapshot
 
 class GetOfFilter(private val result: QuerySnapshot, private val collection: String, private val clientsRegisterModel: ClientsRegisterModel) {

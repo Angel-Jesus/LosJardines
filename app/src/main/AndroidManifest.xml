@@ -16,25 +16,31 @@
         android:theme="@style/Theme.LosJardines"
         tools:targetApi="31">
         <activity
+            android:name=".ui.view.ProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.ReservationActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.StatisticsActivity"
             android:exported="false"
             android:screenOrientation="landscape"
-            tools:ignore="DiscouragedApi"/>
+            tools:ignore="DiscouragedApi" />
         <activity
             android:name=".ui.view.RoomActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity"/>
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".ui.view.ConsultationActivity"
             android:exported="false"
             android:screenOrientation="landscape"
-            tools:ignore="DiscouragedApi"/>
+            tools:ignore="DiscouragedApi" />
         <activity
             android:name=".ui.view.RegisterActivity"
             android:exported="false"
             android:screenOrientation="landscape"
-            tools:ignore="DiscouragedApi"/>
+            tools:ignore="DiscouragedApi" />
         <activity
             android:name=".ui.view.MainActivity"
             android:exported="true"

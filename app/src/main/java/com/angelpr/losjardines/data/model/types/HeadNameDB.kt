@@ -1,4 +1,4 @@
-package com.angelpr.losjardines.data.model
+package com.angelpr.losjardines.data.model.types
 
 object HeadNameDB {
     const val AYN_DB = "AyN"

@@ -17,11 +17,11 @@ import androidx.core.view.isGone
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angelpr.losjardines.R
-import com.angelpr.losjardines.data.model.ActionProcess
+import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
-import com.angelpr.losjardines.data.model.FilterType
-import com.angelpr.losjardines.data.model.Months
-import com.angelpr.losjardines.data.model.SpinnerItem
+import com.angelpr.losjardines.data.model.types.FilterType
+import com.angelpr.losjardines.data.model.types.Months
+import com.angelpr.losjardines.data.model.types.SpinnerItem
 import com.angelpr.losjardines.data.model.UpdateDataModel
 import com.angelpr.losjardines.databinding.ActivityConsultationBinding
 import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentResponse
@@ -127,6 +127,18 @@ class ConsultationActivity : AppCompatActivity() {
                         actionRegister = FirebaseViewModel.ActionRegister.GET,
                         firebaseViewModel = firebaseViewModel
                     ).show(supportFragmentManager, "DialogFragmentResponse")
+                    true
+                }
+
+                R.id.rooms ->{
+                    Log.d("estado", "click rooms")
+                    startActivity(Intent(this, RoomActivity::class.java))
+                    true
+                }
+
+                R.id.reservation -> {
+                    Log.d("estado", "click reservation")
+                    startActivity(Intent(this, ReservationActivity::class.java))
                     true
                 }
 
@@ -277,7 +289,7 @@ class ConsultationActivity : AppCompatActivity() {
     }
 
     private fun systemBar() {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(binding.main.id)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

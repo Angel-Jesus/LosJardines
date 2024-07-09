@@ -3,7 +3,7 @@ package com.angelpr.losjardines.ui.recycleView
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.angelpr.losjardines.data.model.ClientInfoModel
-import com.angelpr.losjardines.data.model.HeadNameDB
+import com.angelpr.losjardines.data.model.types.HeadNameDB
 import com.angelpr.losjardines.data.model.UpdateDataModel
 import com.angelpr.losjardines.databinding.ItemClientsBinding
 

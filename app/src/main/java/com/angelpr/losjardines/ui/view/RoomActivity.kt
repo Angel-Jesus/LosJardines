@@ -2,7 +2,6 @@ package com.angelpr.losjardines.ui.view
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.Window
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -14,12 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angelpr.losjardines.R
-import com.angelpr.losjardines.data.model.ActionProcess
+import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.data.model.RoomModel
 import com.angelpr.losjardines.databinding.ActivityRoomBinding
 import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentSetting
@@ -145,7 +142,7 @@ class RoomActivity : AppCompatActivity() {
     }
 
     private fun systemBar() {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(binding.main.id)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

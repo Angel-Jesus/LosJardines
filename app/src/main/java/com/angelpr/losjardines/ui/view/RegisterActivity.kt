@@ -1,31 +1,21 @@
 package com.angelpr.losjardines.ui.view
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.Window
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isGone
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.angelpr.losjardines.R
-import com.angelpr.losjardines.data.model.ActionProcess
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.databinding.ActivityRegisterBinding
 import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentResponse
 import com.angelpr.losjardines.ui.picker.GetPicker
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
-import com.google.android.gms.common.api.internal.LifecycleActivity
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -140,7 +130,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun systemBar() {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(binding.main.id)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

@@ -1,4 +1,4 @@
-package com.angelpr.losjardines.data.model
+package com.angelpr.losjardines.data.model.types
 
 sealed interface FilterType {
     data object Default: FilterType

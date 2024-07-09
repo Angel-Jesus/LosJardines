@@ -12,10 +12,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.angelpr.losjardines.data.model.ActionProcess
+import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
-import com.angelpr.losjardines.data.model.FilterType
-import com.angelpr.losjardines.data.model.Months
+import com.angelpr.losjardines.data.model.types.FilterType
+import com.angelpr.losjardines.data.model.types.Months
 import com.angelpr.losjardines.data.model.StatisticsModel
 import com.angelpr.losjardines.databinding.ActivityStatisticsBinding
 import com.angelpr.losjardines.ui.recycleView.StatisticsAdapter
@@ -80,7 +80,7 @@ class StatisticsActivity : AppCompatActivity() {
         binding.recycleView.adapter = StatisticsAdapter(statisticsMolde)
     }
 
-    private fun genMonthStr(month: Int): Months{
+    private fun genMonthStr(month: Int): Months {
         return when(month){
             1 -> Months.DECEMBER
             2 -> Months.JANUARY
@@ -98,7 +98,7 @@ class StatisticsActivity : AppCompatActivity() {
     }
 
     private fun systemBar() {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(binding.main.id)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

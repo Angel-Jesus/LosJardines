@@ -1,9 +1,8 @@
 package com.angelpr.losjardines.data
 
 import android.icu.util.Calendar
-import android.util.Log
 import com.angelpr.losjardines.data.model.ClientInfoModel
-import com.angelpr.losjardines.data.model.Months
+import com.angelpr.losjardines.data.model.types.Months
 import com.angelpr.losjardines.data.model.StatisticsModel
 import com.github.mikephil.charting.data.BarEntry
 

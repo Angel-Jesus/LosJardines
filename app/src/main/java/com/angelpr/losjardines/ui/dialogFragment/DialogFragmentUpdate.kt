@@ -12,7 +12,7 @@ import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.angelpr.losjardines.R
-import com.angelpr.losjardines.data.model.HeadNameDB
+import com.angelpr.losjardines.data.model.types.HeadNameDB
 import com.angelpr.losjardines.data.model.UpdateDataModel
 import com.angelpr.losjardines.ui.picker.GetPicker
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
