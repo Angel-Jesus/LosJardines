@@ -37,7 +37,7 @@ class StatisticsActivity : AppCompatActivity() {
         val calendar = Calendar.getInstance()
         val monthNow = calendar.get(Calendar.MONTH) + 1
 
-        firebaseViewModel.getData(ClientsRegisterModel(filter = FilterType.lastMonth, timeFilter = genMonthStr(monthNow)))
+        firebaseViewModel.getRegisterData(ClientsRegisterModel(filter = FilterType.lastMonth, timeFilter = genMonthStr(monthNow)))
 
         // Events to StateFlow
 

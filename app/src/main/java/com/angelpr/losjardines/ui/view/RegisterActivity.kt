@@ -100,7 +100,7 @@ class RegisterActivity : AppCompatActivity() {
                 origin = origin,
                 observation = observation
             )
-            firebaseViewModel.sendData(clientInfoModel)
+            firebaseViewModel.sendRegisterData(clientInfoModel)
 
             firebaseViewModel.updateData(
                 collection = "Rooms",

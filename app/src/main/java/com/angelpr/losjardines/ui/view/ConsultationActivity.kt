@@ -49,7 +49,7 @@ class ConsultationActivity : AppCompatActivity() {
         spinnerFilterMonth()
 
         // Event to get Data Default of cloud firebase
-        firebaseViewModel.getData(ClientsRegisterModel())
+        firebaseViewModel.getRegisterData(ClientsRegisterModel())
         DialogFragmentResponse(
             context = this,
             actionRegister = FirebaseViewModel.ActionRegister.GET,
@@ -78,7 +78,7 @@ class ConsultationActivity : AppCompatActivity() {
 
                 if(uiStateRegister.changeValue){
                     Log.d("estado", "changeValue")
-                    firebaseViewModel.getData(ClientsRegisterModel())
+                    firebaseViewModel.getRegisterData(ClientsRegisterModel())
                     DialogFragmentResponse(
                         context = this@ConsultationActivity,
                         actionRegister = FirebaseViewModel.ActionRegister.GET,
@@ -98,7 +98,7 @@ class ConsultationActivity : AppCompatActivity() {
             // Clear data
             binding.spinnerFilter.setSelection(SpinnerItem.SpinnerPosition.None.ordinal)
             // Event to get Data Default of cloud firebase
-            firebaseViewModel.getData(ClientsRegisterModel())
+            firebaseViewModel.getRegisterData(ClientsRegisterModel())
             DialogFragmentResponse(
                 context = this,
                 actionRegister = FirebaseViewModel.ActionRegister.GET,
@@ -121,7 +121,7 @@ class ConsultationActivity : AppCompatActivity() {
 
                 R.id.loading -> {
                     Log.d("estado", "click loading")
-                    firebaseViewModel.getData(ClientsRegisterModel())
+                    firebaseViewModel.getRegisterData(ClientsRegisterModel())
                     DialogFragmentResponse(
                         context = this,
                         actionRegister = FirebaseViewModel.ActionRegister.GET,
@@ -161,7 +161,7 @@ class ConsultationActivity : AppCompatActivity() {
             }
 
             else -> {
-                firebaseViewModel.getData(
+                firebaseViewModel.getRegisterData(
                     ClientsRegisterModel(
                         filter = typeFilter,
                         descriptionFilter = description,

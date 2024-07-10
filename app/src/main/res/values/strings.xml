@@ -14,7 +14,7 @@
     <string name="btn_txt_update_data">Actualizar dato</string>
 
     <!-- Text Title, subtitle -->
-    <string name="txt_habitaciones">N° habitacion *</string>
+    <string name="txt_room">N° habitacion *</string>
     <string name="txt_name">Apellidos y Nombres *</string>
     <string name="txt_dni">DNI *</string>
     <string name="txt_price">Precio *</string>
@@ -26,9 +26,23 @@
     <string name="txt_setting">Modificar precio de habitacion</string>
     <string name="txt_error_setting_empty">Es necesario rellenar todos los datos</string>
     <string name="txt_error_setting_room">Es necesario ingresar un numero de habitacion existente</string>
+    <string name="txt_room_rv">N° habitacion</string>
+    <string name="txt_date_rv">Fecha reserva</string>
+    <string name="txt_date_enter_rv">Fecha de ingreso</string>
+    <string name="txt_date_exit_rv">Fecha de salida</string>
+    <string name="txt_number_night_rv">N° noches</string>
+    <string name="txt_number_passenger_rv">N° pasajeros</string>
+    <string name="txt_type_service">Tipo de habitacion/Servicio</string>
+    <string name="txt_name_rv">Apellidos y Nombres</string>
+    <string name="txt_dni_rv">DNI</string>
+    <string name="txt_origin_rv">Nacionalidad</string>
+    <string name="txt_fee_rv">Tarifa</string>
+    <string name="txt_phone_email">Telefono de contacto/Correo electronico</string>
+    <string name="txt_observation_rv">Observaciones</string>
 
     <!-- Text hint EditText -->
     <string name="txt_changed">Corregir dato</string>
+
 
     <!-- Text Dialog Box-->
     <string name="txt_state_succesfull">Tarea exitosa</string>

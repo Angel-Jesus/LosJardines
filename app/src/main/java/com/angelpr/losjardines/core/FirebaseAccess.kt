@@ -6,6 +6,7 @@ import com.angelpr.losjardines.data.GetRoomList
 import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
+import com.angelpr.losjardines.data.model.ReservationModel
 import com.angelpr.losjardines.data.model.types.FilterType
 import com.angelpr.losjardines.data.model.types.HeadNameDB
 import com.angelpr.losjardines.data.model.RoomModel
@@ -18,7 +19,6 @@ class FirebaseAccess {
 
     private val db: FirebaseFirestore
         get() = Firebase.firestore
-
 
     fun sendRegister(data: ClientInfoModel, succesListener: (ActionProcess) -> Unit) {
         // Get date and time that is the documentPath of Cloud Firestore
@@ -56,6 +56,47 @@ class FirebaseAccess {
                 succesListener(ActionProcess.ERROR)
             }
 
+    }
+
+    fun sendReservation(reservationModel: ReservationModel, succesListener: (ActionProcess) -> Unit){
+        // Get date and time that is the documentPath of Cloud Firestore
+        val year = Calendar.getInstance().get(Calendar.YEAR).toString()
+        val month = convertIntToStr(Calendar.getInstance().get(Calendar.MONTH) + 1)
+        val day = convertIntToStr(Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+        val hour = convertIntToStr(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+        val minute = convertIntToStr(Calendar.getInstance().get(Calendar.MINUTE))
+        val second = convertIntToStr(Calendar.getInstance().get(Calendar.SECOND))
+
+        val documentPath = "$year$month$day$hour$minute$second"
+
+        val clientReservation = hashMapOf(
+            HeadNameDB.ROOM_RV_DB to reservationModel.room,
+            HeadNameDB.DATE_RV to reservationModel.dateReservation,
+            HeadNameDB.DATE_ENTER_RV to reservationModel.dateEnter,
+            HeadNameDB.DATE_EXIT_RV to reservationModel.dateExit,
+            HeadNameDB.NUMBER_NIGHT_RV to reservationModel.numberNight,
+            HeadNameDB.NUMBER_PSG_RV to reservationModel.numberPassenger,
+            HeadNameDB.SERVICE_RV to reservationModel.typeService,
+            HeadNameDB.NAME_RV to reservationModel.name,
+            HeadNameDB.DNI_RV to reservationModel.dni,
+            HeadNameDB.NATIONALITY_RV to reservationModel.nationality,
+            HeadNameDB.FEE_RV to reservationModel.fee,
+            HeadNameDB.PHONE_EMAIL_RV to reservationModel.phoneEmail,
+            HeadNameDB.OBSERVATION_RV to reservationModel.observation
+        )
+        Log.d("estado", "reser: ${documentPath}")
+        // Get last ID from Cloud Firestore
+        db.collection("Reservation")
+            .document(documentPath)
+            .set(clientReservation)
+            .addOnSuccessListener {
+                Log.d("estado", "DocumentSnapshot successfully written!")
+                succesListener(ActionProcess.SUCCESS)
+            }
+            .addOnFailureListener { error ->
+                Log.w("estado", "Error adding document", error)
+                succesListener(ActionProcess.ERROR)
+            }
     }
 
     fun getRegister(
@@ -126,6 +167,20 @@ class FirebaseAccess {
             .addOnFailureListener { error ->
                 Log.w("estado", "Error getting documents.", error)
                 callback(ClientsRegisterModel(), ActionProcess.ERROR)
+            }
+    }
+
+    fun getReservation(
+        callback: (List<ReservationModel>, ActionProcess) -> Unit
+    ){
+        db.collection("Reservation")
+            .get()
+            .addOnSuccessListener { result ->
+
+            }
+            .addOnFailureListener { error ->
+                Log.w("estado", "Error getting documents.", error)
+                callback(emptyList(), ActionProcess.ERROR)
             }
     }
 

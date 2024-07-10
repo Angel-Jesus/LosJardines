@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.angelpr.losjardines.R
 import com.angelpr.losjardines.data.model.ReservationModel
 
-class ReservationReAdapter(private val reservationList: List<ReservationModel>, private val onClick: () -> Unit): RecyclerView.Adapter<ReservationReViewHolder>() {
+class ReservationReAdapter(private val reservationList: List<ReservationModel>): RecyclerView.Adapter<ReservationReViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservationReViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -21,10 +21,6 @@ class ReservationReAdapter(private val reservationList: List<ReservationModel>, 
 
     override fun onBindViewHolder(holder: ReservationReViewHolder, position: Int) {
         val item = reservationList[position]
-        holder.render(item, reservationList, onClick)
-    }
-
-    fun getAllValue():List<ReservationModel>{
-        return reservationList.filterIndexed { index, _-> index != 0 }
+        holder.render(item)
     }
 }

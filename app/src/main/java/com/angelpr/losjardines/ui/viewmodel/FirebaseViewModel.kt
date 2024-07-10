@@ -6,15 +6,18 @@ import androidx.lifecycle.viewModelScope
 import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.data.model.ClientInfoModel
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
+import com.angelpr.losjardines.data.model.ReservationModel
 import com.angelpr.losjardines.data.model.types.FilterType
 import com.angelpr.losjardines.data.model.types.Months
 import com.angelpr.losjardines.data.model.RoomModel
 import com.angelpr.losjardines.data.model.StatisticsModel
 import com.angelpr.losjardines.domain.DeleteDataToFirebase
-import com.angelpr.losjardines.domain.GetDataToFirebase
+import com.angelpr.losjardines.domain.GetRegisterToFirebase
+import com.angelpr.losjardines.domain.GetReservationToFirebase
 import com.angelpr.losjardines.domain.GetRoomToFirebase
 import com.angelpr.losjardines.domain.GetStatistics
-import com.angelpr.losjardines.domain.SendDataToFirebase
+import com.angelpr.losjardines.domain.SendRegisterToFirebase
+import com.angelpr.losjardines.domain.SendReservationToFirebase
 import com.angelpr.losjardines.domain.UpdateDataToFirebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,15 +26,20 @@ import kotlinx.coroutines.launch
 
 class FirebaseViewModel : ViewModel() {
 
-    private val sendDataToFirebase = SendDataToFirebase()
-    private val getDataToFirebase = GetDataToFirebase()
+    private val sendRegisterToFirebase = SendRegisterToFirebase()
+    private val getRegisterToFirebase = GetRegisterToFirebase()
     private val getStatistics = GetStatistics()
     private val getRoomToFirebase = GetRoomToFirebase()
     private val deleteDataToFirebase = DeleteDataToFirebase()
     private val updateDataToFirebase = UpdateDataToFirebase()
+    private val getReservationToFirebase = GetReservationToFirebase()
+    private val sendReservationToFirebase = SendReservationToFirebase()
 
     private val _stateRegisterData = MutableStateFlow(UiStateRegister())
     val stateRegisterData = _stateRegisterData.asStateFlow()
+
+    private val _stateReservationData = MutableStateFlow(UiStateReservation())
+    val stateReservationData = _stateReservationData.asStateFlow()
 
     private val _stateStatisticsData = MutableStateFlow(UiStateStatistics())
     val stateStatisticsData = _stateStatisticsData.asStateFlow()
@@ -39,17 +47,26 @@ class FirebaseViewModel : ViewModel() {
     private val _stateRoomData = MutableStateFlow(UiStateRoom())
     val stateRoomData = _stateRoomData.asStateFlow()
 
-    fun sendData(clienInfo: ClientInfoModel) {
+    fun sendRegisterData(clienInfo: ClientInfoModel) {
         viewModelScope.launch {
             _stateRegisterData.update { it.copy(response = ActionProcess.LOADING) }
             // Send data to Firebase
-            sendDataToFirebase(clienInfo) { response ->
+            sendRegisterToFirebase(clienInfo) { response ->
                 _stateRegisterData.update { it.copy(response = response) }
             }
         }
     }
 
-    fun getData(clientsRegisterModel: ClientsRegisterModel) {
+    fun sendReservationData(reservationModel: ReservationModel) {
+        viewModelScope.launch {
+            _stateReservationData.update { it.copy(response = ActionProcess.LOADING) }
+            sendReservationToFirebase(reservationModel) { response ->
+                _stateReservationData.update { it.copy(response = response) }
+            }
+        }
+    }
+
+    fun getRegisterData(clientsRegisterModel: ClientsRegisterModel) {
         viewModelScope.launch {
             // State of start loading
             _stateStatisticsData.update { it.copy(responseStatistic = ActionProcess.LOADING) }
@@ -60,7 +77,7 @@ class FirebaseViewModel : ViewModel() {
                 )
             }
 
-            getDataToFirebase(clientsRegister = clientsRegisterModel) { callback, response ->
+            getRegisterToFirebase(clientsRegister = clientsRegisterModel) { callback, response ->
                 if (clientsRegisterModel.filter != FilterType.lastMonth) {
                     _stateRegisterData.update {
                         it.copy(
@@ -84,6 +101,25 @@ class FirebaseViewModel : ViewModel() {
         }
     }
 
+    fun getReservationData(){
+        viewModelScope.launch {
+            _stateReservationData.update {
+                it.copy(
+                    response = ActionProcess.LOADING,
+                    changeValue = false
+                )
+            }
+            getReservationToFirebase { reservationList, response ->
+                _stateReservationData.update {
+                    it.copy(
+                        response = response,
+                        reservationList = reservationList,
+                        changeValue = false
+                    )
+                }
+            }
+        }
+    }
     fun getRoomInfo() {
         viewModelScope.launch {
             _stateRoomData.update {
@@ -186,6 +222,12 @@ class FirebaseViewModel : ViewModel() {
         val response: ActionProcess = ActionProcess.LOADING,
         val changeValue: Boolean = false,
         val clientRegisterModel: ClientsRegisterModel = ClientsRegisterModel()
+    )
+
+    data class UiStateReservation(
+        val response: ActionProcess = ActionProcess.LOADING,
+        val changeValue: Boolean = false,
+        val reservationList: List<ReservationModel> = emptyList()
     )
 
     data class UiStateStatistics(

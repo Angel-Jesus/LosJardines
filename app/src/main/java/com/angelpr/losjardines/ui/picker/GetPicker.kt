@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.update
 
 class GetPicker {
 
-    private val _pickerData = MutableStateFlow<UiDataPicker>(UiDataPicker())
+    private val _pickerData = MutableStateFlow(UiDataPicker())
     val pickerData = _pickerData.asStateFlow()
 
 

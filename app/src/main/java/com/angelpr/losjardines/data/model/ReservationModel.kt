@@ -1,8 +1,17 @@
 package com.angelpr.losjardines.data.model
 
-import com.angelpr.losjardines.data.model.types.TopicReservation
-
 data class ReservationModel(
-    val description: TopicReservation = TopicReservation.LOGO,
-    var valueText: String = ""
+    val room: Int,
+    val dateReservation: String,
+    val dateEnter: String,
+    val dateExit: String,
+    val numberNight: Int,
+    val numberPassenger: Int,
+    val typeService: String,
+    val name: String,
+    val dni: String,
+    val nationality: String,
+    val fee: String,
+    val phoneEmail: String,
+    val observation: String = ""
 )

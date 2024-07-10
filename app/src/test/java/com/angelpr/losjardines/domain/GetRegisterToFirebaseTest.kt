@@ -4,7 +4,7 @@ import io.mockk.MockKAnnotations
 import org.junit.Before
 import org.junit.jupiter.api.Assertions.*
 
-class GetDataToFirebaseTest{
+class GetRegisterToFirebaseTest{
 
     @Before
     fun onBefore(){
