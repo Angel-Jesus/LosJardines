@@ -41,15 +41,15 @@ class DialogFragmentUpdate(
         val editChanged = rootView.findViewById<TextInputEditText>(R.id.edit_changed)
 
         when (dataUpdateModel.keyField) {
-            HeadNameDB.AYN_DB -> {
+            HeadNameDB.AYN_RS -> {
                 txtTitle.text = "¿Desea cambiar el nombre y apellido?"
             }
 
-            HeadNameDB.DNI_DB -> {
+            HeadNameDB.DNI_RS -> {
                 txtTitle.text = "¿Desea cambiar el numero de DNI?"
             }
 
-            HeadNameDB.DATE_DB -> {
+            HeadNameDB.DATE_RS -> {
                 txtTitle.text = "¿Desea cambiar la fecha?"
                 editChanged.isFocusable = false
 
@@ -66,7 +66,7 @@ class DialogFragmentUpdate(
 
             }
 
-            HeadNameDB.TIME_DB -> {
+            HeadNameDB.TIME_RS -> {
                 txtTitle.text = "¿Desea cambiar la hora?"
                 editChanged.isFocusable = false
                 // Event to display a dialog picker of time
@@ -82,20 +82,20 @@ class DialogFragmentUpdate(
 
             }
 
-            HeadNameDB.OBSERVATION_DB -> {
+            HeadNameDB.OBSERVATION_RS -> {
                 txtTitle.text = "¿Desea cambiar las observaciones?"
             }
 
-            HeadNameDB.PRICE_DB -> {
+            HeadNameDB.PRICE_RS -> {
                 txtTitle.text = "¿Desea cambiar el precio?"
                 editChanged.inputType = android.text.InputType.TYPE_CLASS_NUMBER
             }
 
-            HeadNameDB.ORIGIN_DB -> {
+            HeadNameDB.ORIGIN_RS -> {
                 txtTitle.text = "¿Desea cambiar la procedencia?"
             }
 
-            HeadNameDB.NUMER_ROOM_DB -> {
+            HeadNameDB.ROOM_RS -> {
                 txtTitle.text = "¿Desea cambiar el numero de habitacion?"
                 editChanged.inputType = android.text.InputType.TYPE_CLASS_NUMBER
             }

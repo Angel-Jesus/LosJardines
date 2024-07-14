@@ -47,13 +47,20 @@
     <!-- Text Dialog Box-->
     <string name="txt_state_succesfull">Tarea exitosa</string>
     <string name="txt_state_error">Ocurrio un problema</string>
+    <string name="txt_state_not_available">Existe una reserva \n para esta habitacion</string>
     <string name="txt_state_sending">Enviando..</string>
     <string name="txt_state_update">Actualizando..</string>
     <string name="txt_state_delete">Eliminando..</string>
     <string name="txt_state_loading">Obteniendo datos..</string>
 
     <!-- Text toolBar -->
-    <string name="txt_toolbar_return">Regresar</string>
+    <string name="txt_toolbar_title_c_clients">Historial de clientes</string>
+    <string name="txt_toolbar_title_c_reservation">Historial de reservas</string>
+    <string name="txt_toolbar_title_r_clients">Registro de cliente</string>
+    <string name="txt_toolbar_title_r_reservation">Registro de reserva</string>
+    <string name="txt_toolbar_title_products">Productos</string>
+    <string name="txt_toolbar_title_statistics">Estadisticas</string>
+    <string name="txt_toolbar_title_room">Habitaciones disponibles</string>
 
     <!-- Text Table -->
     <string name="txt_table_room">N° habitacion</string>
@@ -64,5 +71,20 @@
     <string name="txt_table_observation">Observaciones</string>
     <string name="txt_table_date">Fecha</string>
     <string name="txt_table_hour">Hora</string>
+
+    <string name="txt_table_room_rv">N° habitacion</string>
+    <string name="txt_table_date_reservation_rv">Fecha \n reserva</string>
+    <string name="txt_table_date_enter_rv">Fecha \n ingreso</string>
+    <string name="txt_table_date_exit_rv">Fecha \n salida</string>
+    <string name="txt_table_number_night_rv">N° noches</string>
+    <string name="txt_table_number_passenger_rv">N° pasajeros</string>
+    <string name="txt_table_type_service">Tipo de habitacion\n/Servicio</string>
+    <string name="txt_table_name_rv">Apellidos y Nombres</string>
+    <string name="txt_table_dni_rv">DNI</string>
+    <string name="txt_table_origin_rv">Nacionalidad</string>
+    <string name="txt_table_fee_rv">Tarifa</string>
+    <string name="txt_table_phone_email">N° de contacto/\nCorreo electronico</string>
+    <string name="txt_table_observation_rv">Observaciones</string>
+
 
 </resources>

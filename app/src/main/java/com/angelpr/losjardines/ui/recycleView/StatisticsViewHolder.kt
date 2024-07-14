@@ -53,6 +53,7 @@ class StatisticsViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
         val dataSet = BarDataSet(statisticsData.entrie, "Cantidad de clientes")
 
+        dataSet.valueTextSize = 12f
         dataSet.setColor(Color.parseColor("#BF272D"))
         dataSet.setDrawValues(true)
 

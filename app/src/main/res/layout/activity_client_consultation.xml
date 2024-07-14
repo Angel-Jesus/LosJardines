@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.view.ConsultationActivity">
+    tools:context=".ui.view.ClientConsultationActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -18,8 +18,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/custom_consultation"
-        app:navigationIcon="@drawable/icon_back"
-        app:title="@string/txt_toolbar_return"
+        app:navigationIcon="@drawable/icon_return"
+        app:title="@string/txt_toolbar_title_c_clients"
+        app:titleCentered="true"
         app:titleTextColor="@color/white" />
 
     <ScrollView

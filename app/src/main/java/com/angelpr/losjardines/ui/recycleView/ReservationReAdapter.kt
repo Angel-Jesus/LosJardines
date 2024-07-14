@@ -10,14 +10,14 @@ class ReservationReAdapter(private val reservationList: List<ReservationModel>):
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservationReViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return ReservationReViewHolder(layoutInflater.inflate(R.layout.item_reservation_recycle, parent, false))
+        return ReservationReViewHolder(layoutInflater.inflate(R.layout.item_reservation, parent, false))
     }
 
     override fun getItemCount(): Int = reservationList.size
 
-    override fun getItemViewType(position: Int): Int = position
+    //override fun getItemViewType(position: Int): Int = position
 
-    override fun getItemId(position: Int): Long = position.toLong()
+    //override fun getItemId(position: Int): Long = position.toLong()
 
     override fun onBindViewHolder(holder: ReservationReViewHolder, position: Int) {
         val item = reservationList[position]

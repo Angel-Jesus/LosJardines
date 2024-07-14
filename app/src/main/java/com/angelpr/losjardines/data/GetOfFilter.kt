@@ -15,7 +15,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
 
     fun default(): ClientsRegisterModel {
         for (index in result.count() downTo 1) {
-            val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_DB)
+            val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_RS)
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
 
             if (monthNow == monthInt) {
@@ -23,17 +23,17 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                     ClientInfoModel(
                         collection = collection,
                         id = result.documents[index - 1].id,
-                        name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
-                        dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
-                        date = result.documents[index - 1].data?.get(HeadNameDB.DATE_DB).toString(),
-                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
-                        observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_DB)
+                        name = result.documents[index - 1].data?.get(HeadNameDB.AYN_RS).toString(),
+                        dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_RS).toString(),
+                        date = result.documents[index - 1].data?.get(HeadNameDB.DATE_RS).toString(),
+                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_RS).toString(),
+                        observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_RS)
                             .toString(),
-                        price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_DB)
+                        price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_RS)
                             .toString().toInt(),
-                        origin = result.documents[index - 1].data?.get(HeadNameDB.ORIGIN_DB)
+                        origin = result.documents[index - 1].data?.get(HeadNameDB.ORIGIN_RS)
                             .toString(),
-                        room = result.documents[index - 1].data?.get(HeadNameDB.NUMER_ROOM_DB)
+                        room = result.documents[index - 1].data?.get(HeadNameDB.ROOM_RS)
                             .toString().toInt()
                     )
             } else {
@@ -51,10 +51,10 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
 
         for (index in result.count() downTo 1) {
 
-            val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_DB)
+            val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_RS)
 
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
-            val origin = result.documents[index - 1].get(HeadNameDB.ORIGIN_DB)
+            val origin = result.documents[index - 1].get(HeadNameDB.ORIGIN_RS)
 
             if (isMonthEmpty.and(origin == clientsRegisterModel.descriptionFilter) || isMonthEmpty.not().and(
                     origin == clientsRegisterModel.descriptionFilter && monthInt == monthFilter
@@ -64,17 +64,17 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                     ClientInfoModel(
                         collection = collection,
                         id = result.documents[index - 1].id,
-                        name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
-                        dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
-                        date = result.documents[index - 1].data?.get(HeadNameDB.DATE_DB).toString(),
-                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
-                        observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_DB)
+                        name = result.documents[index - 1].data?.get(HeadNameDB.AYN_RS).toString(),
+                        dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_RS).toString(),
+                        date = result.documents[index - 1].data?.get(HeadNameDB.DATE_RS).toString(),
+                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_RS).toString(),
+                        observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_RS)
                             .toString(),
-                        price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_DB)
+                        price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_RS)
                             .toString().toInt(),
-                        origin = result.documents[index - 1].data?.get(HeadNameDB.ORIGIN_DB)
+                        origin = result.documents[index - 1].data?.get(HeadNameDB.ORIGIN_RS)
                             .toString(),
-                        room = result.documents[index - 1].data?.get(HeadNameDB.NUMER_ROOM_DB)
+                        room = result.documents[index - 1].data?.get(HeadNameDB.ROOM_RS)
                             .toString().toInt()
                     )
                 flag = !isMonthEmpty
@@ -93,7 +93,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
 
         for (index in result.count() downTo 1) {
 
-            val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_DB)
+            val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_RS)
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
             //Log.d("estado", "id: ${result.count()}")
 
@@ -102,17 +102,17 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                     ClientInfoModel(
                         collection = collection,
                         id = result.documents[index - 1].id,
-                        name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
-                        dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
-                        date = result.documents[index - 1].data?.get(HeadNameDB.DATE_DB).toString(),
-                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
-                        observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_DB)
+                        name = result.documents[index - 1].data?.get(HeadNameDB.AYN_RS).toString(),
+                        dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_RS).toString(),
+                        date = result.documents[index - 1].data?.get(HeadNameDB.DATE_RS).toString(),
+                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_RS).toString(),
+                        observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_RS)
                             .toString(),
-                        price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_DB)
+                        price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_RS)
                             .toString().toInt(),
-                        origin = result.documents[index - 1].data?.get(HeadNameDB.ORIGIN_DB)
+                        origin = result.documents[index - 1].data?.get(HeadNameDB.ORIGIN_RS)
                             .toString(),
-                        room = result.documents[index - 1].data?.get(HeadNameDB.NUMER_ROOM_DB)
+                        room = result.documents[index - 1].data?.get(HeadNameDB.ROOM_RS)
                             .toString().toInt()
                     )
                 flag = true
@@ -132,10 +132,10 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
 
         for (index in result.count() downTo 1) {
 
-            val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_DB)
+            val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_RS)
 
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
-            val dni = result.documents[index - 1].get(HeadNameDB.DNI_DB)
+            val dni = result.documents[index - 1].get(HeadNameDB.DNI_RS)
 
             if (isMonthEmpty.and(dni == clientsRegisterModel.descriptionFilter) || isMonthEmpty.not().and(
                     dni == clientsRegisterModel.descriptionFilter && monthInt == monthFilter
@@ -145,17 +145,17 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                     ClientInfoModel(
                         collection = collection,
                         id = result.documents[index - 1].id,
-                        name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
-                        dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
-                        date = result.documents[index - 1].data?.get(HeadNameDB.DATE_DB).toString(),
-                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
-                        observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_DB)
+                        name = result.documents[index - 1].data?.get(HeadNameDB.AYN_RS).toString(),
+                        dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_RS).toString(),
+                        date = result.documents[index - 1].data?.get(HeadNameDB.DATE_RS).toString(),
+                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_RS).toString(),
+                        observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_RS)
                             .toString(),
-                        price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_DB)
+                        price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_RS)
                             .toString().toInt(),
-                        origin = result.documents[index - 1].data?.get(HeadNameDB.ORIGIN_DB)
+                        origin = result.documents[index - 1].data?.get(HeadNameDB.ORIGIN_RS)
                             .toString(),
-                        room = result.documents[index - 1].data?.get(HeadNameDB.NUMER_ROOM_DB)
+                        room = result.documents[index - 1].data?.get(HeadNameDB.ROOM_RS)
                             .toString().toInt()
                     )
                 flag = !isMonthEmpty
@@ -175,7 +175,7 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
 
         for (index in result.count() downTo 1) {
 
-            val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_DB)
+            val monthResultStr = result.documents[index - 1].get(HeadNameDB.DATE_RS)
             val monthInt = monthResultStr.toString().split("/")[1].toInt()
 
             if (monthFilter == monthInt) {
@@ -183,17 +183,17 @@ class GetOfFilter(private val result: QuerySnapshot, private val collection: Str
                     ClientInfoModel(
                         collection = collection,
                         id = result.documents[index - 1].id,
-                        name = result.documents[index - 1].data?.get(HeadNameDB.AYN_DB).toString(),
-                        dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_DB).toString(),
-                        date = result.documents[index - 1].data?.get(HeadNameDB.DATE_DB).toString(),
-                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_DB).toString(),
-                        observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_DB)
+                        name = result.documents[index - 1].data?.get(HeadNameDB.AYN_RS).toString(),
+                        dni = result.documents[index - 1].data?.get(HeadNameDB.DNI_RS).toString(),
+                        date = result.documents[index - 1].data?.get(HeadNameDB.DATE_RS).toString(),
+                        hour = result.documents[index - 1].data?.get(HeadNameDB.TIME_RS).toString(),
+                        observation = result.documents[index - 1].data?.get(HeadNameDB.OBSERVATION_RS)
                             .toString(),
-                        price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_DB)
+                        price = result.documents[index - 1].data?.get(HeadNameDB.PRICE_RS)
                             .toString().toInt(),
-                        origin = result.documents[index - 1].data?.get(HeadNameDB.ORIGIN_DB)
+                        origin = result.documents[index - 1].data?.get(HeadNameDB.ORIGIN_RS)
                             .toString(),
-                        room = result.documents[index - 1].data?.get(HeadNameDB.NUMER_ROOM_DB)
+                        room = result.documents[index - 1].data?.get(HeadNameDB.ROOM_RS)
                             .toString().toInt()
                     )
                 flag = true

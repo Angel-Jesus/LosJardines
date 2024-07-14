@@ -1,9 +1,11 @@
 package com.angelpr.losjardines.ui.view
 
 import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -22,6 +24,7 @@ import com.angelpr.losjardines.ui.recycleView.StatisticsAdapter
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 class StatisticsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStatisticsBinding
     private val firebaseViewModel: FirebaseViewModel by viewModels()
@@ -60,6 +63,8 @@ class StatisticsActivity : AppCompatActivity() {
                             binding.recycleView.isGone = true
 
                         }
+
+                        else -> Unit
                     }
                 }
             }

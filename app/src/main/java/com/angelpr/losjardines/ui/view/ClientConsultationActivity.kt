@@ -2,6 +2,7 @@ package com.angelpr.losjardines.ui.view
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -17,21 +19,22 @@ import androidx.core.view.isGone
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angelpr.losjardines.R
-import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.data.model.ClientsRegisterModel
+import com.angelpr.losjardines.data.model.UpdateDataModel
+import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.data.model.types.FilterType
 import com.angelpr.losjardines.data.model.types.Months
 import com.angelpr.losjardines.data.model.types.SpinnerItem
-import com.angelpr.losjardines.data.model.UpdateDataModel
-import com.angelpr.losjardines.databinding.ActivityConsultationBinding
-import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentResponse
+import com.angelpr.losjardines.databinding.ActivityClientConsultationBinding
+import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentResponseRg
 import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentUpdate
 import com.angelpr.losjardines.ui.recycleView.ClientsAdapter
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import kotlinx.coroutines.launch
 
-class ConsultationActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityConsultationBinding
+@RequiresApi(Build.VERSION_CODES.O)
+class ClientConsultationActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityClientConsultationBinding
     private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     private var typeFilter: FilterType = FilterType.Default
@@ -40,7 +43,7 @@ class ConsultationActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityConsultationBinding.inflate(layoutInflater)
+        binding = ActivityClientConsultationBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         systemBar()
@@ -50,11 +53,11 @@ class ConsultationActivity : AppCompatActivity() {
 
         // Event to get Data Default of cloud firebase
         firebaseViewModel.getRegisterData(ClientsRegisterModel())
-        DialogFragmentResponse(
+        DialogFragmentResponseRg(
             context = this,
-            actionRegister = FirebaseViewModel.ActionRegister.GET,
+            action = FirebaseViewModel.Action.GET,
             firebaseViewModel = firebaseViewModel
-        ).show(supportFragmentManager, "DialogFragmentResponse")
+        ).show(supportFragmentManager, "DialogFragmentResponseRg")
 
         // Events of StateFlow
         lifecycleScope.launch {
@@ -74,14 +77,16 @@ class ConsultationActivity : AppCompatActivity() {
                         Log.d("estado", "error")
                         binding.recycleViewTable.isGone = true
                     }
+
+                    else -> Unit
                 }
 
                 if(uiStateRegister.changeValue){
                     Log.d("estado", "changeValue")
                     firebaseViewModel.getRegisterData(ClientsRegisterModel())
-                    DialogFragmentResponse(
-                        context = this@ConsultationActivity,
-                        actionRegister = FirebaseViewModel.ActionRegister.GET,
+                    DialogFragmentResponseRg(
+                        context = this@ClientConsultationActivity,
+                        action = FirebaseViewModel.Action.GET,
                         firebaseViewModel = firebaseViewModel
                     ).show(supportFragmentManager, "DialogFragmentResponse")
                 }
@@ -99,9 +104,9 @@ class ConsultationActivity : AppCompatActivity() {
             binding.spinnerFilter.setSelection(SpinnerItem.SpinnerPosition.None.ordinal)
             // Event to get Data Default of cloud firebase
             firebaseViewModel.getRegisterData(ClientsRegisterModel())
-            DialogFragmentResponse(
+            DialogFragmentResponseRg(
                 context = this,
-                actionRegister = FirebaseViewModel.ActionRegister.GET,
+                action = FirebaseViewModel.Action.GET,
                 firebaseViewModel = firebaseViewModel
             ).show(supportFragmentManager, "DialogFragmentResponse")
         }
@@ -122,9 +127,9 @@ class ConsultationActivity : AppCompatActivity() {
                 R.id.loading -> {
                     Log.d("estado", "click loading")
                     firebaseViewModel.getRegisterData(ClientsRegisterModel())
-                    DialogFragmentResponse(
+                    DialogFragmentResponseRg(
                         context = this,
-                        actionRegister = FirebaseViewModel.ActionRegister.GET,
+                        action = FirebaseViewModel.Action.GET,
                         firebaseViewModel = firebaseViewModel
                     ).show(supportFragmentManager, "DialogFragmentResponse")
                     true
@@ -138,7 +143,7 @@ class ConsultationActivity : AppCompatActivity() {
 
                 R.id.reservation -> {
                     Log.d("estado", "click reservation")
-                    startActivity(Intent(this, ReservationActivity::class.java))
+                    startActivity(Intent(this, ReservationConsultationActivity::class.java))
                     true
                 }
 
@@ -168,9 +173,9 @@ class ConsultationActivity : AppCompatActivity() {
                         timeFilter = monthFilter
                     )
                 )
-                DialogFragmentResponse(
+                DialogFragmentResponseRg(
                     context = this,
-                    actionRegister = FirebaseViewModel.ActionRegister.GET,
+                    action = FirebaseViewModel.Action.GET,
                     firebaseViewModel = firebaseViewModel
                 ).show(supportFragmentManager, "DialogFragmentResponse")
             }

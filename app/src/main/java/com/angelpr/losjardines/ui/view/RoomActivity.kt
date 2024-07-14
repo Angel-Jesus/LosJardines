@@ -1,6 +1,7 @@
 package com.angelpr.losjardines.ui.view
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.view.Window
 import android.widget.ImageView
@@ -8,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -24,6 +26,7 @@ import com.angelpr.losjardines.ui.recycleView.RoomsAdapter
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 class RoomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomBinding
     private val firebaseViewModel: FirebaseViewModel by viewModels()
@@ -59,6 +62,8 @@ class RoomActivity : AppCompatActivity() {
                         dialogViewError()
 
                     }
+
+                    else -> Unit
                 }
 
                 if(uiStateRoom.changeValue){

@@ -1,13 +1,11 @@
 package com.angelpr.losjardines.ui.view
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.angelpr.losjardines.R
 import com.angelpr.losjardines.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -22,15 +20,11 @@ class MainActivity : AppCompatActivity() {
         systemBar()
 
         binding.btnRegister.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            startActivity(Intent(this, ClientRegisterActivity::class.java))
         }
 
         binding.btnConsultation.setOnClickListener {
-            startActivity(Intent(this, ConsultationActivity::class.java))
-        }
-
-        binding.btnReservation.setOnClickListener {
-            startActivity(Intent(this, ReservationActivity::class.java))
+            startActivity(Intent(this, ClientConsultationActivity::class.java))
         }
 
         binding.btnProducts.setOnClickListener{

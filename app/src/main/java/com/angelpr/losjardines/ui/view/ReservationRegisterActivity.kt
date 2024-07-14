@@ -1,25 +1,27 @@
 package com.angelpr.losjardines.ui.view
 
 import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.angelpr.losjardines.R
 import com.angelpr.losjardines.data.model.ReservationModel
-import com.angelpr.losjardines.databinding.ActivityReservationBinding
+import com.angelpr.losjardines.databinding.ActivityReservationRegisterBinding
+import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentResponseRs
 import com.angelpr.losjardines.ui.picker.GetPicker
-import com.angelpr.losjardines.ui.recycleView.ReservationReAdapter
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import kotlinx.coroutines.launch
+import java.time.Duration
+import java.time.LocalDate
 
-class ReservationActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityReservationBinding
+@RequiresApi(Build.VERSION_CODES.O)
+class ReservationRegisterActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityReservationRegisterBinding
     private val firebaseViewModel: FirebaseViewModel by viewModels()
     private val picker = GetPicker()
     private var isEnter = false
@@ -27,7 +29,7 @@ class ReservationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityReservationBinding.inflate(layoutInflater)
+        binding = ActivityReservationRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         systemBar()
 
@@ -48,6 +50,11 @@ class ReservationActivity : AppCompatActivity() {
                 }
                 else{
                     binding.editDateExitRv.setText(uiDataPicker.dateValue)
+                }
+
+                if(binding.editDateEnterRv.text.isNullOrEmpty().not() && binding.editDateExitRv.text.isNullOrEmpty().not()){
+                    val days = getDaysBetweenDays(binding.editDateEnterRv.text.toString(), binding.editDateExitRv.text.toString())
+                    binding.editNumberNightRv.setText(days.toString())
                 }
             }
         }
@@ -81,12 +88,29 @@ class ReservationActivity : AppCompatActivity() {
         )
         //Log.d("estado", "Reservation: $reservation")
         firebaseViewModel.sendReservationData(reservation)
+
+        DialogFragmentResponseRs(
+            context = this,
+            action = FirebaseViewModel.Action.SEND,
+            firebaseViewModel = firebaseViewModel
+        ).show(supportFragmentManager, "DialogFragmentResponseRs")
+    }
+
+    private fun getDaysBetweenDays(startDay:String, endDay:String):Long{
+
+        val a = startDay.split("/")
+        val b = endDay.split("/")
+
+        val firstDay = LocalDate.of(a[2].toInt(), a[1].toInt(), a[0].toInt())
+        val lastDay = LocalDate.of(b[2].toInt(), b[1].toInt(), b[0].toInt())
+
+        return Duration.between(firstDay.atStartOfDay(), lastDay.atStartOfDay()).toDays()
     }
 
     private fun getDateNow(): String{
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
+        val month = calendar.get(Calendar.MONTH) + 1
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val monthStr = if(month > 10){ month.toString() } else { "0$month" }

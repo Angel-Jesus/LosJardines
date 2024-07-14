@@ -1,6 +1,7 @@
 package com.angelpr.losjardines.data.model
 
 data class ReservationModel(
+    val id: String = "",
     val room: Int,
     val dateReservation: String,
     val dateEnter: String,

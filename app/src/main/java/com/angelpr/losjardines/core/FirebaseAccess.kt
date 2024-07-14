@@ -2,6 +2,7 @@ package com.angelpr.losjardines.core
 
 import android.util.Log
 import com.angelpr.losjardines.data.GetOfFilter
+import com.angelpr.losjardines.data.GetReservationList
 import com.angelpr.losjardines.data.GetRoomList
 import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.data.model.ClientInfoModel
@@ -32,14 +33,14 @@ class FirebaseAccess {
         val documentPath = "$year$month$day$hour$minute$second"
 
         val client = hashMapOf(
-            HeadNameDB.AYN_DB to data.name,
-            HeadNameDB.DNI_DB to data.dni,
-            HeadNameDB.DATE_DB to data.date,
-            HeadNameDB.TIME_DB to data.hour,
-            HeadNameDB.OBSERVATION_DB to data.observation,
-            HeadNameDB.PRICE_DB to data.price,
-            HeadNameDB.ORIGIN_DB to data.origin,
-            HeadNameDB.NUMER_ROOM_DB to data.room
+            HeadNameDB.AYN_RS to data.name,
+            HeadNameDB.DNI_RS to data.dni,
+            HeadNameDB.DATE_RS to data.date,
+            HeadNameDB.TIME_RS to data.hour,
+            HeadNameDB.OBSERVATION_RS to data.observation,
+            HeadNameDB.PRICE_RS to data.price,
+            HeadNameDB.ORIGIN_RS to data.origin,
+            HeadNameDB.ROOM_RS to data.room
         )
 
         // Get last ID from Cloud Firestore
@@ -70,7 +71,7 @@ class FirebaseAccess {
         val documentPath = "$year$month$day$hour$minute$second"
 
         val clientReservation = hashMapOf(
-            HeadNameDB.ROOM_RV_DB to reservationModel.room,
+            HeadNameDB.ROOM_RV to reservationModel.room,
             HeadNameDB.DATE_RV to reservationModel.dateReservation,
             HeadNameDB.DATE_ENTER_RV to reservationModel.dateEnter,
             HeadNameDB.DATE_EXIT_RV to reservationModel.dateExit,
@@ -176,7 +177,7 @@ class FirebaseAccess {
         db.collection("Reservation")
             .get()
             .addOnSuccessListener { result ->
-
+                callback(GetReservationList(result).getList(), ActionProcess.SUCCESS)
             }
             .addOnFailureListener { error ->
                 Log.w("estado", "Error getting documents.", error)

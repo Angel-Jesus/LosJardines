@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.view.ReservationConsultationActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_default"
+        android:minHeight="?actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/icon_return"
+        app:title="@string/txt_toolbar_title_c_reservation"
+        app:titleTextColor="@color/white"
+        app:titleCentered="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:ignore="SpeakableTextPresentCheck">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="ScrollViewSize">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/logo_hotel"
+                tools:ignore="ContentDescription" />
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tabla"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:id="@+id/table"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/txtRoom"
+                            android:layout_width="120dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_room"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtReservation"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_date_reservation_rv"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtDateEnter"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_date_enter_rv"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtDateExit"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_date_exit_rv"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtNumberNight"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_number_night_rv"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtNumberPassenger"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_number_passenger_rv"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtTypeService"
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_type_service"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtName"
+                            android:layout_width="200dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_name_rv"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtDni"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_dni_rv"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtNationality"
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_origin_rv"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtFee"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_fee_rv"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtPhoneEmail"
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_phone_email"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtObservation"
+                            android:layout_width="200dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/background_table_register"
+                            android:gravity="center"
+                            android:text="@string/txt_table_observation_rv"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycleView_table"
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/table" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </HorizontalScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

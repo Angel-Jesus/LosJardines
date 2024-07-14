@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    tools:context=".ui.view.RegisterActivity">
+    tools:context=".ui.view.ClientRegisterActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -17,9 +17,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/icon_back"
-        app:title="@string/txt_toolbar_return"
-        app:titleTextColor="@color/white" />
+        app:navigationIcon="@drawable/icon_return"
+        app:title="@string/txt_toolbar_title_r_clients"
+        app:titleCentered="true"
+        app:titleTextColor="@color/white"
+        app:menu="@menu/custom_registation" />
 
     <ScrollView
         android:id="@+id/scrollView"

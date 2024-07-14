@@ -2,11 +2,13 @@ package com.angelpr.losjardines.ui.dialogFragment
 
 import android.app.Dialog
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.Window
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.view.isGone
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
@@ -15,11 +17,12 @@ import com.angelpr.losjardines.data.model.types.ActionProcess
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import kotlinx.coroutines.launch
 
-class DialogFragmentResponse(
+@RequiresApi(Build.VERSION_CODES.O)
+class DialogFragmentResponseRs(
     private val context: Context,
-    private val actionRegister: FirebaseViewModel.ActionRegister,
+    private val action: FirebaseViewModel.Action,
     private var firebaseViewModel: FirebaseViewModel
-): DialogFragment() {
+) : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(context).apply {
@@ -33,16 +36,18 @@ class DialogFragmentResponse(
         val imageView = dialog.findViewById<ImageView>(R.id.stateIcon)
 
         lifecycleScope.launch {
-            firebaseViewModel.stateRegisterData.collect{uiStateRegister ->
-                when(uiStateRegister.response){
+            firebaseViewModel.stateReservationData.collect { uiStateReservation ->
+
+                when (uiStateReservation.response) {
                     ActionProcess.LOADING -> {
-                        when(actionRegister){
-                            FirebaseViewModel.ActionRegister.SEND -> textInfo.setText(R.string.txt_state_sending)
-                            FirebaseViewModel.ActionRegister.UPDATE -> textInfo.setText(R.string.txt_state_update)
-                            FirebaseViewModel.ActionRegister.DELETE -> textInfo.setText(R.string.txt_state_delete)
-                            FirebaseViewModel.ActionRegister.GET -> textInfo.setText(R.string.txt_state_loading)
+                        when (action) {
+                            FirebaseViewModel.Action.SEND -> textInfo.setText(R.string.txt_state_sending)
+                            FirebaseViewModel.Action.UPDATE -> textInfo.setText(R.string.txt_state_update)
+                            FirebaseViewModel.Action.DELETE -> textInfo.setText(R.string.txt_state_delete)
+                            FirebaseViewModel.Action.GET -> textInfo.setText(R.string.txt_state_loading)
                         }
                     }
+
                     ActionProcess.SUCCESS -> {
                         dialog.setCancelable(true) //Enable cancel when click outside
                         progressBar.isGone = true
@@ -50,6 +55,7 @@ class DialogFragmentResponse(
                         textInfo.text = getString(R.string.txt_state_succesfull)
                         imageView.setImageResource(R.drawable.successful)
                     }
+
                     ActionProcess.ERROR -> {
                         dialog.setCancelable(true) //Enable cancel when click outside
                         progressBar.isGone = true
@@ -57,7 +63,10 @@ class DialogFragmentResponse(
                         textInfo.text = getString(R.string.txt_state_error)
                         imageView.setImageResource(R.drawable.error)
                     }
+
+                    ActionProcess.NOT_AVAILABLE -> Unit
                 }
+
             }
         }
         dialog.show()

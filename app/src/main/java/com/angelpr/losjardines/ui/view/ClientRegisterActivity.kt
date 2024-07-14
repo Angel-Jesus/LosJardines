@@ -1,9 +1,11 @@
 package com.angelpr.losjardines.ui.view
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,22 +13,24 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.angelpr.losjardines.R
 import com.angelpr.losjardines.data.model.ClientInfoModel
-import com.angelpr.losjardines.databinding.ActivityRegisterBinding
-import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentResponse
+import com.angelpr.losjardines.databinding.ActivityClientRegisterBinding
+import com.angelpr.losjardines.ui.dialogFragment.DialogFragmentResponseRg
 import com.angelpr.losjardines.ui.picker.GetPicker
 import com.angelpr.losjardines.ui.viewmodel.FirebaseViewModel
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
-class RegisterActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityRegisterBinding
+@RequiresApi(Build.VERSION_CODES.O)
+class ClientRegisterActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityClientRegisterBinding
     private val firebaseViewModel: FirebaseViewModel by viewModels()
     private val getPicker = GetPicker()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        binding = ActivityClientRegisterBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         systemBar()
@@ -60,7 +64,19 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         binding.btnConsultation.setOnClickListener {
-            startActivity(Intent(this, ConsultationActivity::class.java))
+            startActivity(Intent(this, ClientConsultationActivity::class.java))
+        }
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.reservation_c ->{
+                    startActivity(Intent(this, ReservationRegisterActivity::class.java))
+                    true
+                }
+                else ->{
+                    false
+                }
+            }
         }
 
         // Event to back previous activity
@@ -69,6 +85,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun sendDataOfView() {
         val collection = Calendar.getInstance().get(Calendar.YEAR).toString()
@@ -102,17 +119,11 @@ class RegisterActivity : AppCompatActivity() {
             )
             firebaseViewModel.sendRegisterData(clientInfoModel)
 
-            firebaseViewModel.updateData(
-                collection = "Rooms",
-                documentPath = room,
-                keyField = "state",
-                updateData = false
-            )
-            DialogFragmentResponse(
+            DialogFragmentResponseRg(
                 context = this,
-                actionRegister = FirebaseViewModel.ActionRegister.SEND,
+                action = FirebaseViewModel.Action.SEND,
                 firebaseViewModel = firebaseViewModel
-            ).show(supportFragmentManager, "DialogFragmentResponse")
+            ).show(supportFragmentManager, "DialogFragmentResponseRg")
         } else {
             // Show Alert Dialog to fill all information except observation
             messageAlert()

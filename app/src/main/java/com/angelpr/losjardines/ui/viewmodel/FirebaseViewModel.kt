@@ -1,6 +1,8 @@
 package com.angelpr.losjardines.ui.viewmodel
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angelpr.losjardines.data.model.types.ActionProcess
@@ -24,6 +26,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 class FirebaseViewModel : ViewModel() {
 
     private val sendRegisterToFirebase = SendRegisterToFirebase()
@@ -50,18 +53,37 @@ class FirebaseViewModel : ViewModel() {
     fun sendRegisterData(clienInfo: ClientInfoModel) {
         viewModelScope.launch {
             _stateRegisterData.update { it.copy(response = ActionProcess.LOADING) }
-            // Send data to Firebase
-            sendRegisterToFirebase(clienInfo) { response ->
-                _stateRegisterData.update { it.copy(response = response) }
+            // Get data of reservation if exist
+            getReservationToFirebase { reservationList, response ->
+                if(response == ActionProcess.SUCCESS){
+                    // Send Data to firebase
+                    sendRegisterToFirebase(clienInfo, reservationList) { r ->
+                        _stateRegisterData.update { it.copy(response = r) }
+
+                        // Update data of room available if there aren't reservation
+                        if(r == ActionProcess.SUCCESS){
+                            updateData(
+                                collection = "Rooms",
+                                documentPath = clienInfo.room.toString(),
+                                keyField = "state",
+                                updateData = false
+                            )
+                        }
+                    }
+                }else if(response == ActionProcess.ERROR){
+                    _stateRegisterData.update { it.copy(response = response) }
+                }
             }
+
         }
     }
 
     fun sendReservationData(reservationModel: ReservationModel) {
         viewModelScope.launch {
             _stateReservationData.update { it.copy(response = ActionProcess.LOADING) }
-            sendReservationToFirebase(reservationModel) { response ->
-                _stateReservationData.update { it.copy(response = response) }
+            // Send Data to firebase
+            sendReservationToFirebase(reservationModel) { r ->
+                _stateReservationData.update { it.copy(response = r) }
             }
         }
     }
@@ -160,6 +182,7 @@ class FirebaseViewModel : ViewModel() {
 
     fun updateData(collection: String, documentPath: String, keyField: String, updateData: Any) {
         viewModelScope.launch {
+
             _stateRegisterData.update {
                 it.copy(
                     response = ActionProcess.LOADING,
@@ -180,7 +203,9 @@ class FirebaseViewModel : ViewModel() {
                 data = updateData
             ) { response ->
                 if (response == ActionProcess.SUCCESS) {
+
                     _stateRegisterData.update { it.copy(response = response, changeValue = true) }
+
                     _stateRoomData.update {
                         it.copy(
                             responseRoom = ActionProcess.LOADING,
@@ -188,7 +213,9 @@ class FirebaseViewModel : ViewModel() {
                         )
                     }
                 } else {
+
                     _stateRegisterData.update { it.copy(response = response, changeValue = false) }
+
                     _stateRoomData.update {
                         it.copy(
                             responseRoom = ActionProcess.LOADING,
@@ -241,7 +268,7 @@ class FirebaseViewModel : ViewModel() {
         val roomDataList: List<RoomModel> = emptyList()
     )
 
-    enum class ActionRegister {
+    enum class Action {
         SEND,
         GET,
         UPDATE,

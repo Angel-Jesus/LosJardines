@@ -25,7 +25,7 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 UpdateDataModel(
                     collection = client.collection,
                     documentPath = client.id,
-                    keyField = HeadNameDB.NUMER_ROOM_DB,
+                    keyField = HeadNameDB.ROOM_RS,
                     data = client.room,
                 ),
                 position
@@ -36,7 +36,7 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 UpdateDataModel(
                     collection = client.collection,
                     documentPath = client.id,
-                    keyField = HeadNameDB.TIME_DB,
+                    keyField = HeadNameDB.TIME_RS,
                     data = client.hour,
                 ),
                 position
@@ -47,7 +47,7 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 UpdateDataModel(
                     collection = client.collection,
                     documentPath = client.id,
-                    keyField = HeadNameDB.DATE_DB,
+                    keyField = HeadNameDB.DATE_RS,
                     data = client.date,
                 ),
                 position
@@ -58,7 +58,7 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 UpdateDataModel(
                     collection = client.collection,
                     documentPath = client.id,
-                    keyField = HeadNameDB.AYN_DB,
+                    keyField = HeadNameDB.AYN_RS,
                     data = client.name,
                 ),
                 position
@@ -69,7 +69,7 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 UpdateDataModel(
                     collection = client.collection,
                     documentPath = client.id,
-                    keyField = HeadNameDB.DNI_DB,
+                    keyField = HeadNameDB.DNI_RS,
                     data = client.dni,
                 ),
                 position
@@ -80,7 +80,7 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 UpdateDataModel(
                     collection = client.collection,
                     documentPath = client.id,
-                    keyField = HeadNameDB.ORIGIN_DB,
+                    keyField = HeadNameDB.ORIGIN_RS,
                     data = client.origin,
                 ),
                 position
@@ -91,7 +91,7 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 UpdateDataModel(
                     collection = client.collection,
                     documentPath = client.id,
-                    keyField = HeadNameDB.PRICE_DB,
+                    keyField = HeadNameDB.PRICE_RS,
                     data = client.price,
                 ),
                 position
@@ -102,7 +102,7 @@ class ClientsViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 UpdateDataModel(
                     collection = client.collection,
                     documentPath = client.id,
-                    keyField = HeadNameDB.OBSERVATION_DB,
+                    keyField = HeadNameDB.OBSERVATION_RS,
                     data = client.observation,
                 ),
                 position
